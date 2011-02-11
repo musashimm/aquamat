@@ -1,0 +1,48 @@
+
+Aquamat - Sterownik akwarystyczny Open Source
+
+Wszystkie źródła (za wyjątkiem biblioteki hd44780) są objęte licencją GPLv2. 
+Pełny tekst licencji znajduje się w pliku COPYING.
+
+Struktura katalogów i plików:
+	* software - miejsce na wszystkie kody źródłowe implementujące funkcjonalności sterownika
+	* hardware - miejsce na schematy, rysunki, diagramy itp. opisujące sprzęt
+	* docs - katalog dokumentacji
+	* files - katalog z plikami pomocnymi w projekcie
+	* eeprom - przykładowe zrzuty z pamięci EEPROM
+	COPYING - pełny tekst licencji GPLv2
+	README - ten plik
+	Doxyfile - definicje tworzenia dokumentacji
+	
+	*************************
+	Pliki znajdujące sie w katalogu hardware:
+	* sn2032.lbr (zawiera moją dodatkową definicję gniazda baterii)
+	* con-usb-3.lbr
+	* ftdi4.lbr
+	zostały pobrane ze strony firmy CadSoft i nie należą do projektu. Jednak ze względu, 
+	że projekt korzysta z definicji elementów w nich zawartych postanowiłem dystrybuować je razem
+	z plikami projektowymi.
+	*************************
+	
+	
+############################### wydanie 20100418 ##################################
+	
+	Zawartość pakietu
+ 	* oprogramowanie sterownika - wersja 1.0.5
+	* płytka avr core - wersja 1.1
+ 	* płytka outputs board 16 - 1.0
+ 	* płytka relays board 6 - 1.0
+ 	
+ 	Uwagi
+ 	* Aby oprogramowanie w wersji 1.0.5 zadziałało z płytką avr core 1.1 należy 
+ 	zdefiniować odpowiednie piny w plikach nagłówkowych.
+ 	* W płytkach relays board 6 i outputs board 16 należy gniazda DB9 zmienić na wtyki.
+ 	* Należy odpowiednio ustawić zworki dla układów PCF na płytce outputs board 16,
+ 	stosownie do adresów uzywanych w programie.
+ 	
+
+Do rysowania schematów i projektowania płytek wykorzystuję darmową wersję Eagle'a.
+
+Pozdrawiam
+
+Wojciech Todryk (wojciech@todryk.pl)
