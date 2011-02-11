@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448"
+   height="524.40942"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="hardware_1_X_X.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/soldier/workspace/aquamat/files/hardware_1_X_X.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-201.33965 : 334.54494 : 1"
+       inkscape:vp_y="-660.51584 : 750.81211 : 0"
+       inkscape:vp_z="357.3355 : 826.03113 : 1"
+       inkscape:persp3d-origin="193.84824 : 448.60032 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective3347"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3786938"
+     inkscape:cx="372.04725"
+     inkscape:cy="262.20472"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1214"
+     inkscape:window-height="929"
+     inkscape:window-x="2"
+     inkscape:window-y="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3208"
+       transform="matrix(1.2130992,0,0,1.1779947,-61.481284,-38.958413)">
+      <g
+         id="g2514"
+         transform="translate(35.874605,-89.28055)">
+        <rect
+           style="opacity:1;fill:#1ace86;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.88767898;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3197"
+           width="188.45428"
+           height="76.942589"
+           x="-33.870659"
+           y="359.6181"
+           rx="8.3630533"
+           ry="0"
+           transform="matrix(0.9999518,-9.8143008e-3,0.414426,0.910083,0,0)" />
+        <text
+           xml:space="preserve"
+           style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+           x="216.14879"
+           y="388.68576"
+           id="text3204"><tspan
+             sodipodi:role="line"
+             id="tspan3206"
+             x="216.14879"
+             y="388.68576">outputs board 16</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g3235"
+       transform="matrix(1.2130992,0,0,1.1779947,-294.35132,158.18948)">
+      <g
+         transform="translate(2.3411136,-3.5116703)"
+         id="g3199">
+        <rect
+           style="opacity:1;fill:#1ace86;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.88767898;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3191"
+           width="188.45428"
+           height="76.942589"
+           x="321.40524"
+           y="27.748892"
+           rx="8.3630533"
+           ry="0"
+           transform="matrix(0.9999518,-9.8143004e-3,0.414426,0.910083,0,0)" />
+        <text
+           xml:space="preserve"
+           style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+           x="490.46329"
+           y="85.45063"
+           id="text3193"><tspan
+             sodipodi:role="line"
+             id="tspan3195"
+             x="490.46329"
+             y="85.45063">avr core</tspan></text>
+      </g>
+    </g>
+    <rect
+       style="opacity:1;fill:#c3eaed;fill-opacity:1;fill-rule:evenodd;stroke:#0c5e91;stroke-width:1.4579103;stroke-miterlimit:4;stroke-dasharray:8.74746251, 1.45791041;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3438"
+       width="229.77386"
+       height="223.81416"
+       x="427.8526"
+       y="73.171135"
+       rx="0" />
+    <rect
+       style="fill:#1ace86;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.57863218;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3185"
+       width="130.03296"
+       height="47.38192"
+       x="353.53339"
+       y="178.80304"
+       rx="10.142155"
+       ry="0"
+       transform="matrix(0.9999637,-8.523882e-3,0.4643587,0.8856472,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.34501743px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="463.871"
+       y="193.20145"
+       id="text3254"
+       transform="scale(1.0147907,0.9854249)"><tspan
+         sodipodi:role="line"
+         id="tspan3256"
+         x="463.871"
+         y="193.20145">relays board 6</tspan></text>
+    <rect
+       style="fill:#1ace86;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.57863218;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3252"
+       width="130.03296"
+       height="47.38192"
+       x="325.3194"
+       y="264.7883"
+       rx="10.142155"
+       ry="0"
+       transform="matrix(0.9999637,-8.5238816e-3,0.4643587,0.8856472,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.34501743px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="472.38901"
+       y="270.13422"
+       id="text3258"
+       transform="scale(1.0147907,0.9854249)"><tspan
+         sodipodi:role="line"
+         id="tspan3260"
+         x="472.38901"
+         y="270.13422">relays board 6</tspan></text>
+    <rect
+       style="opacity:1;fill:#c3eaed;fill-opacity:1;fill-rule:evenodd;stroke:#0c5e91;stroke-width:1.13008249;stroke-miterlimit:4;stroke-dasharray:6.78049546, 1.13008256;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3452"
+       width="230.10709"
+       height="134.28171"
+       x="427.57495"
+       y="308.18091"
+       rx="0" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.44874942;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 379.1279,299.92477 C 395.52526,314.17337 409.52583,335.67325 427.65966,344.57029"
+       id="path3373" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:2.03221083;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 368.78935,277.46517 C 402.42882,279.43628 407.76254,241.38772 417.55308,218.19782 C 423.34654,202.78146 438.42464,193.50687 453.98945,189.21496"
+       id="path3379" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:2.03221083;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 376.59933,294.70152 C 402.74991,293.98813 434.44314,289.6541 448.41611,265.12105 C 451.41793,260.92001 456.1704,257.02766 461.79944,257.47097"
+       id="path3381" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:2.04517293;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 145.84422,249.22068 C 128.37396,243.86642 109.54861,265.10046 118.33907,280.90827 C 124.00707,290.48577 136.21023,292.47273 146.55254,293.31625"
+       id="path3383" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.34501648px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="438.3223"
+       y="345.51181"
+       id="text3440"
+       transform="scale(1.0147907,0.9854249)"><tspan
+         sodipodi:role="line"
+         id="tspan3442"
+         x="438.3223"
+         y="345.51181">Sterowanie urządzeń 12V</tspan><tspan
+         sodipodi:role="line"
+         x="438.3223"
+         y="363.44308"
+         id="tspan3444">Max:4 urządzenia</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.34501648px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="433.19012"
+       y="95.771233"
+       id="text3446"
+       transform="scale(1.0147907,0.9854249)"><tspan
+         sodipodi:role="line"
+         id="tspan3448"
+         x="433.19012"
+         y="95.771233">Sterowanie urządzeń 220V</tspan><tspan
+         sodipodi:role="line"
+         x="433.19012"
+         y="113.7025"
+         id="tspan3450">Max:12 urządzeń</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.34501648px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="243.77364"
+       y="37.390404"
+       id="text3454"
+       transform="scale(1.0147907,0.9854249)"><tspan
+         sodipodi:role="line"
+         id="tspan3456"
+         x="243.77364"
+         y="37.390404">Przykładowe rozwiązanie części sprzętowej </tspan><tspan
+         sodipodi:role="line"
+         x="243.77364"
+         y="55.321674"
+         id="tspan3469">dla wersji oprogramowania 1.X.X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12.8903904px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="249.9325"
+       y="446.02884"
+       id="text3465"
+       transform="scale(0.911888,1.0966259)"><tspan
+         sodipodi:role="line"
+         id="tspan3467"
+         x="249.9325"
+         y="446.02884">Wersja 1.X.X obsługuje maksymalnie 16 urządzeń</tspan></text>
+  </g>
+</svg>
