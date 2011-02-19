@@ -16,67 +16,79 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-	$Id$
+	$Id:$
 */
 
-/** @file timersv.h
-	@brief Plik nagłówkowy - Implementacja timerów interwałowych.
+#ifndef TIMERSSEC_H
+#define TIMERSSEC_H
+
+/** @file timerssec.h
+	@brief Plik nagłówkowy - Implementacja timerów sekundowych.
 */
 
-/** @struct TIMERV
-	@brief Struktura przechowywująca dane o timerze interwałowym.
+/** @struct TIMERSSEC
+	@brief Struktura przechowywująca dane o timerze.
 */
-struct TIMERV {
-        uint8_t off;       /**< Czas włączenia.*/
-		uint8_t on;        /**< Czas wyłączenia.*/
-		uint8_t out;       /**< Przypisane wejście.*/
-		uint8_t counter;   /**< Aktualny licznik minutowy.*/
+struct TIMERSSEC {
+	struct MIT when; 	/**< Czas, od którego timer jest włączony. Struktura \ref MIT "MIT".*/
+	uint8_t duration; 	/**< Czas w sekundach, przez jaki będzie timer.*/
+	uint8_t on; 		/**< Czas w sekundach, przez jaki jest aktywny timer.*/
+	uint8_t out;     	/**< Przypisane wyjście.*/
+
 /** Flagi.
-@verbatim
+	@verbatim
 7654|3210
     |   X - blokada timera
     |   0 - odblokowany
     |   1 - zablokowany
+    |XXX  - dzien tygodnia działania timera
+    |000  - Nd
+    |001  - Pn
+    |010  - Wt
+    |011  - Sr
+    |100  - Cz
+    |101  - Pt
+    |110  - So
+    |111  - Każdego dnia
    X|     - flaga zajętości timera
    0|     - timer wyłączony
    1|     - timer włączony
-  X |     - flaga porównywania licznika
-  0 |     - licznik porównywany jest z wartością TIMERV::off
-  1 |     - licznik porównywany jest z wartością TIMERV::on
-@endverbatim
-*/
-		uint8_t flags;
+	@endverbatim
+	*/
+	uint8_t flags;
 };
 
 /** Flaga blokady.
 */
-#define TIMERSV_FLAG_BLOCKED 0
+#define TIMERSSEC_FLAG_BLOCKED 0
 
 /** Flaga zajetości.
 */
-#define TIMERSV_FLAG_BUSY 4
+#define TIMERSSEC_FLAG_BUSY 4
 
-/** Flaga porównania licznika.
+/** Maska dni tygodnia
 */
-#define TIMERSV_FLAG_DIRECTION 5
+#define TIMERSSEC_FLAG_WDAY_MASK 0x0E
 
 /** Maska flag konfiguracyjnych.
 */
-#define TIMERSV_FLAG_CONFIG_MASK 0x0F
+#define TIMERSSEC_FLAG_CONFIG_MASK 0x0F
 
 /** Minimalny czas włączenia/wyłączenia.
 */
-#define TIMERSV_MIN_SET_TIME 1
+#define TIMERSSEC_MIN_SET_TIME 1
 
 /** Maksymalny czas włączenia/wyłączenia.
 */
-#define TIMERSV_MAX_SET_TIME 99
+#define TIMERSSEC_MAX_SET_TIME 99
 
 /** Czas domyślny włączenia/wyłączenia.
 */
-#define TIMERSV_DEFAULT_TIME 5
+#define TIMERSSEC_DEFAULT_TIME 10
 
-uint8_t timersv_is_valid_interval(uint8_t);
-void timersv_process(void);
+/** Liczba tiemrów sekundowych w systemie.
+*/
+#define TIMERSSEC_NUM 4
 
-extern struct TIMERV timersv[TIMERSV_NUM];
+#endif
+
