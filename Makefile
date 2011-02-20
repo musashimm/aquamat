@@ -9,7 +9,7 @@ vpath %.elf $(SRCS_DIR)
 vpath %.lst $(SRCS_DIR)
 
 _OBJS         = menu.o qbuttons.o top_off.o alarms.o comm_gui.o eeprom.o hd44780.o io.o log.o one_wire.o outputs.o \
-rtc.o strings.o temp.o timers.o timersv.o ui.o usart.o twi.o timerssec.o aquamat.o
+rtc.o strings.o temp.o timers.o timersv.o ui.o usart.o twi.o timerssec.o time.o aquamat.o
 OBJS = $(patsubst %,$(SRCS_DIR)/%,$(_OBJS))
 
 #MCU_TARGET     = at90s2313
@@ -88,7 +88,7 @@ EEPROM_DATE = $(shell date +"%Y%m%d_%H%M%S")
 EEPROM_DUMP = eeprom_$(EEPROM_DATE).dump
 EEPROM_LAST_DUMP = eeprom_last.dump
 
-all: $(PRG).elf lst text load
+all: $(PRG).elf lst text size load
 
 %.c: %.h
 	touch $@
@@ -100,7 +100,7 @@ $(PRG).elf: $(OBJS)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(SRCS_DIR)/$@ $^ $(LIBS)
 
 clean:
-	rm -rfv $(SRCS_DIR)/*.o $(SRCS_DIR)/$(PRG).elf $(SRCS_DIR)/*.eps $(VSRCS_DIR)/*.png $(SRCS_DIR)/*.pdf $(SRCS_DIR)/*.bak
+	rm -rfv $(SRCS_DIR)/*.o $(SRCS_DIR)/$(PRG).elf $(SRCS_DIR)/*.eps $(SRCS_DIR)/*.png $(SRCS_DIR)/*.pdf $(SRCS_DIR)/*.bak
 	rm -rfv $(SRCS_DIR)/*.lst $(SRCS_DIR)/*.map $(EXTRA_CLEAN_FILES)
 
 lst: $(PRG).lst
@@ -115,6 +115,9 @@ text: hex bin srec
 hex:  $(PRG).hex
 bin:  $(PRG).bin
 srec: $(PRG).srec
+size:
+	avr-size $(SRCS_DIR)/$(PRG).elf
+
 
 %.hex: %.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $(SRCS_DIR)/$< $(SRCS_DIR)/$@

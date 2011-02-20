@@ -21,19 +21,52 @@
 
 /** @file timerssec.c
 	@brief Implementacja timerów sekundowych.
+
+	Warunkiem włączenia timera jest zgodność czasów: aktualnego i czasu ustawionego w timerze. Warunkiem wyłączenia jest kiedy licznik <em>on</em> osiągnie wartość <em>duration</em>.
 */
 
 #include "aquamat.h"
 #include "timerssec.h"
 #include "outputs.h"
-#include "strings.h"
 
-extern uint8_t minutes;
-extern uint8_t hours;
 extern uint8_t wday;
 
 struct TIMERSEC timerssec[TIMERSSEC_NUM];
 
+/** Zwraca status timera.
+	@param t numer timera, od 0 do \ref TIMERSSEC_NUM - 1
+*/
+uint8_t timerssec_status (uint8_t t) {
+
+	if (timerssec[t].flags & _BV(TIMERS_FLAG_BLOCKED)) {
+		return TIM_STATUS_BLOCKED;
+	}
+
+	if (timerssec[t].out >= OUTPUTS_NUM) {
+		return TIM_STATUS_BAD_OUT;
+	}
+
+	if (check_is_wday(timerssec[t].flags,TIMERSSEC_FLAG_WDAY_MASK)) {
+		return TIM_STATUS_NOT_WDAY;
+	}
+
+	if (output_check_flag(timerssec[t].out,OUTPUT_BLOCK_FLAG)) {
+		return TIM_STATUS_OUT_BLOCKED;
+	}
+
+	if (is_not_valid_MIT(&timerssec[t].when)) {
+		return TIM_STATUS_BAD_TIME_1;
+	}
+
+	if (timerssec[t].flags & _BV(TIMERSSEC_FLAG_BUSY)) {
+		return TIM_STATUS_ALREADY_BUSY;
+	}
+
+	if (check_if_its_time(&timerssec[t].when)) {
+		return TIM_STATUS_ACTIVE;
+	}
+
+	return TIM_STATUS_NOTACTIVE;
 }
 
 /** Przełącza skojarzone wyjście.
@@ -50,44 +83,14 @@ void timerssec_switch_out (uint8_t t,uint8_t action) {
 	}
 }
 
-
 /** Sprawdza warunek wyłączenia timera. Procedura wywoływana co sekundę.
 */
 void timerssec_when_active(void) {
 	uint8_t t;
 	for (t=0;t<TIMERSSEC_NUM;t++) {
-		if (timerssec_status(t) == TIM_STATUS_ACTIVE) {
-			if (++timerssec[t].on >= timerssec[t].duration + 1) {
-				timerssec_switch_out (t,OFF);
-			}
-		}
-	}
-}
-
-
-///** Przetwarza po kolei wszystkie timery.
-//*/
-//void timerssec_check_on_condition(void) {
-//	uint8_t t;
-//	for (t=0;t<TIMERS_NUM;t++) {
-//		if (timer_status(t) == TIM_STATUS_ACTIVE) {
-//			timer_switch_out(t,ON);
-//		} else if (timer_status(t) == TIM_STATUS_NOTACTIVE || timer_status(t) == TIM_STATUS_NOT_WDAY || timer_status(t) == TIM_STATUS_BLOCKED) {
-//			timer_switch_out(t,OFF);
-//		}
-//	}
-//}
-
-/** Sprawdza warunek wyłączenia timera. Procedura wywoływana co sekundę.
-*/
-void timerssec_when_active(void) {
-	uint8_t t;
-	for (t=0;t<TIMERSSEC_NUM;t++) {
-		if (timerssec_status(t) == TIM_STATUS_ACTIVE) {
-			timerssec[t].on++;
-			if (timerssec[t].on >= timerssec[t].duration + 1) {
-				output_switch(timerssec[t].out,OFF);
-				timerssec[t].flags &= ~_BV(TIMERSSEC_FLAG_BUSY);
+		if (timerssec_status(t) == TIM_STATUS_ALREADY_BUSY) {
+			if (++timerssec[t].on >= timerssec[t].duration) {
+				timerssec_switch_out(t,OFF);
 			}
 		}
 	}
@@ -99,21 +102,9 @@ void timerssec_when_notactive(void) {
 	uint8_t t;
 	for (t=0;t<TIMERSSEC_NUM;t++) {
 		if (timerssec_status(t) == TIM_STATUS_ACTIVE) {
-			timerssec[t].on++;
-			if (timerssec[t].on >= timerssec[t].duration + 1) {
-				output_switch(timerssec[t].out,OFF);
-				timerssec[t].flags &= ~_BV(TIMERSSEC_FLAG_BUSY);
-			}
+			timerssec[t].on=0;
+			timerssec_switch_out(t,ON);
 		}
 	}
 }
 
-
-//
-//		if (timer_status(t) == TIM_STATUS_ACTIVE) {
-//			timer_switch_out(t,ON);
-//		} else if (timer_status(t) == TIM_STATUS_NOTACTIVE || timer_status(t) == TIM_STATUS_NOT_WDAY || timer_status(t) == TIM_STATUS_BLOCKED) {
-//			timer_switch_out(t,OFF);
-//		}
-//	}
-//}

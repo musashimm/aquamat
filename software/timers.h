@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	$Id$
 */
 
@@ -26,6 +26,9 @@
 /** @struct TIMER
 	@brief Struktura przechowywująca dane o timerze.
 */
+
+#include "time.h"
+
 struct TIMER {
         struct MIT from; /**< Czas, od którego timer jest włączony. Struktura \ref MIT "MIT".*/
         struct MIT to;   /**< Czas, do którego timer jest włączony. Struktura \ref MIT "MIT".*/
@@ -50,7 +53,7 @@ struct TIMER {
    1|     - timer włączony
 	@endverbatim
 	*/
-        uint8_t flags;	
+        uint8_t flags;
 };
 
 /** Flaga blokady.

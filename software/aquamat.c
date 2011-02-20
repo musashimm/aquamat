@@ -53,9 +53,11 @@ void(*restart)(void) = 0x0000;
 
 volatile uint8_t clock10ms = TICKS;
 volatile uint8_t clock05s = 2;
-volatile uint8_t seconds;
-volatile uint8_t minutes;
-volatile uint8_t hours;
+
+volatile uint8_t seconds; /**< Aktualny czas - sekundy.*/
+volatile uint8_t minutes; /**< Aktualny czas - minuty.*/
+volatile uint8_t hours; /**< Aktualny czas - godziny.*/
+
 volatile uint8_t year = 9;
 volatile uint8_t month = 1;
 volatile uint8_t day = 1;
@@ -182,40 +184,6 @@ void ioinit(void)
 	buzzer_off();
 
 	wdt_enable(WDTO_2S);
-}
-
-/** Ustawia strukturę MIT.
-	@param *mit wskaźnik do struktury
-	@param hours wartość godziny
-	@param minutes wartość minut
-	@param default_hours wartość godziny
-	@param default_minutes wartość minut
-*/
-void set_MIT(struct MIT *mit,uint8_t hours,uint8_t minutes,uint8_t default_hours,uint8_t default_minutes) {
-
-	if (hours > MIT_MAX_HOURS) {
-		mit->hours = default_hours;
-	} else {
-		mit->hours = hours;
-	}
-
-	if (minutes > MIT_MAX_MINUTES) {
-		mit->minutes = default_minutes;
-	} else {
-		mit->minutes = minutes;
-	}
-}
-
-/** Sprawdza czy struktura MIT zawiera dopuszczalne wartości.
-	@param *mit wskaźnik do struktury
-    @return  \ref TRUE - zawiera niedopuszczalne wartości, \ref FALSE - zawiera dopuszczalne wartości
-*/
-uint8_t is_not_valid_MIT(struct MIT *mit) {
-	if (mit->hours > MIT_MAX_HOURS || mit->minutes > MIT_MAX_MINUTES) {
-		return TRUE;
-	} else {
-		return FALSE;
-	}
 }
 
 /** Główna funkcja programu
