@@ -46,6 +46,7 @@
 #include "commandsDefs.h"
 #include "qbuttons.h"
 #include "menu.h"
+#include "timerssec.h"
 
 /** Wskaźnik do funkcji restart.
 */
@@ -236,6 +237,7 @@ int main(void)
 			temp_counter++;
 			top_off_check_time();
 			top_off_process();
+			timerssec_when_active();
 			CSF(FLAG_SECOND_PAST);
 		}
 
@@ -270,6 +272,7 @@ int main(void)
 			if (alarms_block_notification_counter < ALARM_MAX_BLOCK_VALUE) {
 				alarms_block_notification_counter++;
 			}
+			timerssec_when_notactive();
 			CSF(FLAG_MINUTE_PAST);
 		}
 

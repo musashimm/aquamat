@@ -40,6 +40,7 @@
 #include "menu.h"
 #include "timers.h"
 #include "timersv.h"
+#include "timerssec.h"
 
 extern uint8_t minutes;
 extern uint8_t hours;
@@ -63,6 +64,7 @@ PROGMEM char TEMP_MENU_S[] =    ". Kontrola      \n temperatury    ";
 PROGMEM char TIME_MENU_S[] =    ". Ustawienia    \n czasu          ";
 PROGMEM char TIMERS_MENU_S[] =  ". Timery        \n godzinowe      ";
 PROGMEM char TIMERSV_MENU_S[] = ". Timery        \n interwalowe    ";
+PROGMEM char TIMERSSEC_MENU_S[] = ". Timery        \n sekundowe      ";
 
 PROGMEM char AD_CLEAR_MENU_S[] = " Czy skasowac   \n alarmy AD?     ";
 
@@ -80,22 +82,24 @@ PGM_P MENU0_STRS[] PROGMEM =
 	TEMP_MENU_S,
 	TIME_MENU_S,
 	TIMERS_MENU_S,
-	TIMERSV_MENU_S
+	TIMERSV_MENU_S,
+	TIMERSSEC_MENU_S
 };
 
 PROGMEM FuncPtr FuncPtrTable[] = {
-	status_rotate,status_outputs,status_temp,status_ad,								//4
+	status_rotate,status_outputs,status_temp,status_ad,						//4
 	ui_menu_0,ui_alarms_display,ui_alarms_clear,ui_alarms_block,			//3
-	ui_menu_0,ui_outputs_settings_display,														//2
+	ui_menu_0,ui_outputs_settings_display,									//2
 	ui_menu_0,ui_topoff_clear_max_run,ui_topoff_settings_display,			//3
-	ui_menu_0,ui_temp_settings_display,ui_temp_outputs_cooling_display,ui_temp_outputs_heating_display,ui_temp_param_display,ui_temp_sensor_discover,	//6
-	ui_menu_0,ui_time_set_hours,ui_time_set_day,											//3
-	ui_menu_0,ui_timers_settings_display,															//2
-	ui_menu_0,ui_timersv_settings_display															//2
+	ui_menu_0,ui_temp_settings_display,ui_temp_outputs_cooling_display,ui_temp_outputs_heating_display,ui_temp_param_display,ui_temp_sensor_discover,													//6
+	ui_menu_0,ui_time_set_hours,ui_time_set_day,							//3
+	ui_menu_0,ui_timers_settings_display,									//2
+	ui_menu_0,ui_timersv_settings_display,									//2
+	ui_menu_0,ui_timerssec_settings_display									//2
 };
 
 PROGMEM const uint8_t MENU_LENGTH[] = {
-	8,
+	9,
 	4, //0
 	4, //1
 	2, //2
@@ -103,7 +107,8 @@ PROGMEM const uint8_t MENU_LENGTH[] = {
 	6, //4
 	3, //5
 	2, //6
-	2  //7
+	2, //7
+	2, //8
 };
 
 void ui_init (void) {
@@ -904,15 +909,17 @@ void diplay_MIT(struct MIT *mit) {				// LCD zajmuje 5 znaków
 
 void display_out_long(uint8_t id) {				// LCD zajmuje 10 znaków
 
-	hd44780_label(PSTR("W"),TRUE,FALSE);
+	hd44780_outstrn_P(PSTR(" W"));
+	//hd44780_label(PSTR("W"),TRUE,FALSE);
 
 	if (id >= OUTPUTS_NUM) {
-		hd44780_outstrn_P(MINUSMINUS_S);
+		hd44780_outstrn_P(MINUSMINUSMINUS_S);
 		//hd44780_out8dec(id+1);
 		hd44780_outstrn_P(SLASH_S);
 		hd44780_outstrn_P(MINUSMINUS_S);
 		hd44780_outstrn_P(MINUSMINUSMINUS_S);
 	} else {
+		hd44780_switch_state(!(output_check_flag(id,OUTPUT_ACTIVE_FLAG)),output_check_flag(id,OUTPUT_BLOCK_FLAG));
 		hd44780_out8dec(id+1);
 		hd44780_outstrn_P(SLASH_S);
 		hd44780_outstrn(output_name);

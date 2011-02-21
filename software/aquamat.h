@@ -23,6 +23,19 @@
 	@brief Plik nagłówkowy - Główna pętla programowa.
 */
 
+/** Niektóre ustawienia oraz niektóry sprzęt są inne w wersji prototypowej, np. niektóre adresy układów I2C,
+	więc poniższą definicją przełączam się na wersję prototypową.
+	Normalnie poniższa definicja powinna pozostać zakomentowana.
+*/
+//#define PROTOTYPE yes
+#ifdef PROTOTYPE
+#warning ################################################
+#warning PROTOTYPE mode enabled, disable it before commit
+#warning ################################################
+#endif
+
+/** Częstotliwość pracy kwarcu
+*/
 #define F_CPU 8000000UL
 
 #include <avr/io.h>
@@ -66,8 +79,8 @@ typedef uint16_t TEMP;
 
 #define PROGRAM_NAME "Aquamat"
 #define PROGRAM_VERSION_MAIN 1
-#define PROGRAM_VERSION_MAJOR 0
-#define PROGRAM_VERSION_MINOR 12
+#define PROGRAM_VERSION_MAJOR 1
+#define PROGRAM_VERSION_MINOR 0
 #define PROGRAM_FULL_NAME  "    " PROGRAM_NAME "\n  wersja " STRINGIFY(PROGRAM_VERSION_MAIN) "." STRINGIFY(PROGRAM_VERSION_MAJOR) "." STRINGIFY(PROGRAM_VERSION_MINOR)
 
 /** ustawienia timera */

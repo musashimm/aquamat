@@ -28,8 +28,15 @@
 #include "aquamat.h"
 #include "timerssec.h"
 #include "outputs.h"
+#include "menu.h"
+#include "eeprom.h"
+#include "strings.h"
+#include "hd44780.h"
+#include "ui.h"
+#include "usart.h"
 
 extern uint8_t wday;
+extern uint8_t tmp_var;
 
 struct TIMERSEC timerssec[TIMERSSEC_NUM];
 
@@ -38,7 +45,7 @@ struct TIMERSEC timerssec[TIMERSSEC_NUM];
 */
 uint8_t timerssec_status (uint8_t t) {
 
-	if (timerssec[t].flags & _BV(TIMERS_FLAG_BLOCKED)) {
+	if (timerssec[t].flags & _BV(TIMERSSEC_FLAG_BLOCKED)) {
 		return TIM_STATUS_BLOCKED;
 	}
 
@@ -46,7 +53,7 @@ uint8_t timerssec_status (uint8_t t) {
 		return TIM_STATUS_BAD_OUT;
 	}
 
-	if (check_is_wday(timerssec[t].flags,TIMERSSEC_FLAG_WDAY_MASK)) {
+	if (!(check_is_wday(timerssec[t].flags,TIMERSSEC_FLAG_WDAY_MASK))) {
 		return TIM_STATUS_NOT_WDAY;
 	}
 
@@ -106,5 +113,62 @@ void timerssec_when_notactive(void) {
 			timerssec_switch_out(t,ON);
 		}
 	}
+	usart_outstrn_P(PSTR("\n"));
 }
 
+/** Wyświetlanie i konfiguracja timerów sekundowych
+*/
+void ui_timerssec_settings_display(void) {
+
+	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
+		load_output_name(EEPROM_OUTS_SETTING_BEGIN,timerssec[menu_unit()].out);
+		tmp_var = (timerssec[menu_unit()].flags & TIMERSSEC_FLAG_WDAY_MASK) >> 1;
+		MENU_SF(MENU_VARS_LOADED_FLAG);
+	}
+
+	hd44780_label(PSTR("TmrS"),FALSE,FALSE);
+	hd44780_out4hex(menu_unit()+1);
+	hd44780_switch_state(!(timerssec[menu_unit()].flags & _BV(TIMERSSEC_FLAG_BLOCKED)),FALSE);
+	hd44780_outstrn_P(SPACE_S);
+	lcd_wday_display(tmp_var);
+	hd44780_outstrn_P(SPACE_S);
+	diplay_MIT(&timerssec[menu_unit()].when);
+	display_break_line(1,0);
+	hd44780_out8dec(timerssec[menu_unit()].on);
+	hd44780_outstrn_P(SLASH_S);
+	hd44780_out8dec(timerssec[menu_unit()].duration);
+	display_out_long(timerssec[menu_unit()].out);
+
+	switch (menu_phase()) {
+	case 0:
+		menu_standard_unit(TIMERSSEC_NUM);
+		break;
+	case 1:
+		menu_set_phase();
+		break;
+	case 2:
+		menu_mod_bit(1,7,&(timerssec[menu_unit()].flags),TIMERSSEC_FLAG_BLOCKED);
+		break;
+	case 3:
+		menu_mod_uint8(1,10,&tmp_var,0,TIMERSSEC_MAX_WDAY,FALSE);
+		timerssec[menu_unit()].flags &= ~TIMERSSEC_FLAG_WDAY_MASK;
+		timerssec[menu_unit()].flags |= (tmp_var << 1);
+		break;
+	case 4:
+		menu_mod_uint8(1,13,&timerssec[menu_unit()].when.hours,0,MIT_MAX_HOURS,FALSE);
+		break;
+	case 5:
+		menu_mod_uint8(1,16,&timerssec[menu_unit()].when.minutes,0,MIT_MAX_MINUTES,FALSE);
+		break;
+	case 6:
+		menu_mod_uint8(2,5,&(timerssec[menu_unit()].duration),TIMERSSEC_MIN_SET_TIME,TIMERSSEC_MAX_SET_TIME,FALSE);
+		break;
+	case 7:
+		menu_mod_uint8(2,16,&(timerssec[menu_unit()].out),0,OUTPUTS_NUM,TRUE);
+		break;
+	case 8:
+		//save_timer_settings(EEPROM_TIMERS_SETTING_BEGIN,menu_unit());
+		//save_timers_settings(EEPROM_TIMERS_SETTING_BEGIN);
+		menu_reset_phase();
+	}
+}

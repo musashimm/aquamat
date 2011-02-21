@@ -19,6 +19,9 @@
 	$Id:$
 */
 
+#ifndef TIME_H
+#define TIME_H
+
 /** @file time.h
 	@brief Plik nagłówkowy - Funkcje związane z obsługą czasu.
 */
@@ -51,3 +54,5 @@ uint8_t is_not_valid_MIT(struct MIT*);
 void set_MIT(struct MIT *,uint8_t,uint8_t,uint8_t,uint8_t);
 uint8_t check_is_wday(uint8_t,uint8_t);
 uint8_t check_if_its_time(struct MIT*);
+
+#endif

@@ -35,11 +35,11 @@ extern uint8_t minutes;
 	@param mask maska bitowa dla dni tygodnia
 */
 uint8_t check_is_wday(uint8_t flags,uint8_t mask) {
-	if ((flags & mask) != wday &&		// warunek dla dnia tygodnia
-		(flags & mask) != mask ) {	// warunek dla każdego dnia
-		return FALSE;
+	if ((flags & mask) >> 1 == wday ||	// warunek dla dnia tygodnia !!! Uwaga przesunięcie bez parametryzacji
+		(flags & mask) == mask ) {	// warunek dla każdego dnia !!! konfiguracja dnia musi być w określonym miejscu
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 
 /** Porównuje strukturę MIT z aktualnym czasem.

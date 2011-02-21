@@ -42,8 +42,8 @@ struct TIMERSEC {
 	@verbatim
 7654|3210
     |   X - blokada timera
-    |   0 - odblokowany
-    |   1 - zablokowany
+    |   0 - odblokowany/włączony
+    |   1 - zablokowany/wyłączony
     |XXX  - dzien tygodnia działania timera
     |000  - Nd
     |001  - Pn
@@ -92,6 +92,15 @@ struct TIMERSEC {
 /** Liczba tiemrów sekundowych w sterowniku.
 */
 #define TIMERSSEC_NUM 4
+
+/** Maksymalna wartość dni tygodnia
+*/
+#define TIMERSSEC_MAX_WDAY 7
+
+void timerssec_switch_out (uint8_t,uint8_t);
+void timerssec_when_active(void);
+void timerssec_when_notactive(void);
+void ui_timerssec_settings_display(void);
 
 #endif
 

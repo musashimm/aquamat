@@ -88,7 +88,7 @@ EEPROM_DATE = $(shell date +"%Y%m%d_%H%M%S")
 EEPROM_DUMP = eeprom_$(EEPROM_DATE).dump
 EEPROM_LAST_DUMP = eeprom_last.dump
 
-all: $(PRG).elf lst text size load
+all: $(PRG).elf lst text size
 
 %.c: %.h
 	touch $@
