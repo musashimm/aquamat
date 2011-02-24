@@ -27,8 +27,10 @@
 	więc poniższą definicją przełączam się na wersję prototypową.
 	Normalnie poniższa definicja powinna pozostać zakomentowana.
 */
-//#define PROTOTYPE yes
+
+#define PROTOTYPE yes
 #ifdef PROTOTYPE
+#define BUZZER_ON_HIGH
 #warning ################################################
 #warning PROTOTYPE mode enabled, disable it before commit
 #warning ################################################
@@ -129,14 +131,14 @@ typedef uint16_t TEMP;
 #define BUZZER_PORTOUT PORT(BUZZER_PORT)
 #define BUZZER_DDR DDR(BUZZER_PORT)
 
-//#define BUZZER_ON_LOW YES
-
-#ifdef BUZZER_ON_LOW
-#define buzzer_on() BUZZER_PORTOUT &= ~_BV(BUZZER_SWITCH)
-#define buzzer_off() BUZZER_PORTOUT |= _BV(BUZZER_SWITCH)
-#else
+/** W zależności od użytego tranzystora NPN lub PNP sterującego buzzer'em.
+*/
+#ifdef BUZZER_ON_HIGH
 #define buzzer_on() BUZZER_PORTOUT |= _BV(BUZZER_SWITCH)
 #define buzzer_off() BUZZER_PORTOUT &= ~_BV(BUZZER_SWITCH)
+#else
+#define buzzer_on() BUZZER_PORTOUT &= ~_BV(BUZZER_SWITCH)
+#define buzzer_off() BUZZER_PORTOUT |= _BV(BUZZER_SWITCH)
 #endif
 
 #define buzzer_toggle() BUZZER_PORTOUT ^= _BV(BUZZER_SWITCH)

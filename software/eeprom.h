@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	$Id$
 */
 
@@ -73,12 +73,15 @@
 #define EEPROM_TOPOFF_MAX_RUN_OFFSET 2
 #define EEPROM_TOPOFF_SIZE 3
 
+#define EEPROM_TIMERSSEC_SETTINGS_BEGIN (EEPROM_TOPOFF_SETTINGS_BEGIN + EEPROM_TOPOFF_SIZE)
+
 void eeprom_write_byte(uint16_t,uint8_t);
 uint8_t eeprom_read_byte(uint16_t);
 void eeprom_write_word(uint16_t,uint16_t);
 uint16_t eeprom_read_word(uint16_t);
 void eeprom_read_block(uint16_t,uint8_t*,uint8_t);
 void eeprom_write_block(uint16_t,uint8_t*,uint8_t);
+void eeprom_read_byte_and_set (uint16_t,uint8_t*,uint8_t,uint8_t,uint8_t);
 
 void load_temp_sensor_settings(uint16_t,uint8_t);
 void save_temp_sensor_settings(uint16_t,uint8_t);

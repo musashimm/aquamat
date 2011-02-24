@@ -97,10 +97,23 @@ struct TIMERSEC {
 */
 #define TIMERSSEC_MAX_WDAY 7
 
+/** Adresacja EEPROM
+*/
+#define EEPROM_TIMERSEC_WHEN_HOURS_OFFSET 0
+#define EEPROM_TIMERSEC_WHEN_MINUTES_OFFSET 1
+#define EEPROM_TIMERSEC_DURATION_OFFSET 2
+#define EEPROM_TIMERSEC_OUT_OFFSET 3
+#define EEPROM_TIMERSEC_FLAGS_OFFSET 4
+#define EEPROM_TIMERSEC_SIZE (EEPROM_TIMERSEC_FLAGS_OFFSET + 1)
+
 void timerssec_switch_out (uint8_t,uint8_t);
 void timerssec_when_active(void);
 void timerssec_when_notactive(void);
 void ui_timerssec_settings_display(void);
+void save_timersec_settings(uint16_t,uint8_t);
+void load_timersec_settings(uint16_t,uint8_t);
+void save_timerssec_settings(uint16_t);
+void load_timerssec_settings(uint16_t);
 
 #endif
 

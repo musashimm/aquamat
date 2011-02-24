@@ -35,7 +35,6 @@
 #include "ui.h"
 #include "usart.h"
 
-extern uint8_t wday;
 extern uint8_t tmp_var;
 
 struct TIMERSEC timerssec[TIMERSSEC_NUM];
@@ -113,7 +112,6 @@ void timerssec_when_notactive(void) {
 			timerssec_switch_out(t,ON);
 		}
 	}
-	usart_outstrn_P(PSTR("\n"));
 }
 
 /** Wyświetlanie i konfiguracja timerów sekundowych
@@ -167,8 +165,50 @@ void ui_timerssec_settings_display(void) {
 		menu_mod_uint8(2,16,&(timerssec[menu_unit()].out),0,OUTPUTS_NUM,TRUE);
 		break;
 	case 8:
-		//save_timer_settings(EEPROM_TIMERS_SETTING_BEGIN,menu_unit());
-		//save_timers_settings(EEPROM_TIMERS_SETTING_BEGIN);
+		save_timersec_settings(EEPROM_TIMERSSEC_SETTINGS_BEGIN,menu_unit());
 		menu_reset_phase();
 	}
 }
+
+/** Wczytuje konfigurację wszystkich timerów sekundowych.
+*/
+void load_timerssec_settings (uint16_t addr) {
+	uint8_t i;
+ 	for (i=0;i<TIMERSSEC_NUM;i++) {
+ 		load_timersec_settings(i * EEPROM_TIMERSEC_SIZE + addr,i);
+ 	}
+}
+
+/** Zapisuje konfigurację wszystkich timerów sekundowych.
+*/
+void save_timerssec_settings (uint16_t addr) {
+	uint8_t i;
+ 	for (i=0;i<TIMERSSEC_NUM;i++) {
+ 		save_timersec_settings(addr,i);
+ 	}
+}
+
+/** Zapisuje konfigurację jednego trimera sekundowego.
+	@param uint16_t base_addr adres bazowy, pod który będzie zapisana konfiguracja
+	@param uint8_t t index timera
+*/
+void save_timersec_settings(uint16_t base_addr, uint8_t t) {
+	uint16_t t_addr = t * EEPROM_TIMERSEC_SIZE + base_addr;
+	eeprom_write_byte(t_addr+EEPROM_TIMERSEC_WHEN_HOURS_OFFSET,timerssec[t].when.hours);
+	eeprom_write_byte(t_addr+EEPROM_TIMERSEC_WHEN_MINUTES_OFFSET,timerssec[t].when.minutes);
+	eeprom_write_byte(t_addr+EEPROM_TIMERSEC_DURATION_OFFSET,timerssec[t].duration);
+	eeprom_write_byte(t_addr+EEPROM_TIMERSEC_OUT_OFFSET,timerssec[t].out);
+	eeprom_write_byte(t_addr+EEPROM_TIMERSEC_FLAGS_OFFSET,timerssec[t].flags & TIMERSSEC_FLAG_CONFIG_MASK);
+}
+
+/** Wczytuje konfigurację wszystkich timerów sekundowych.
+	@param uint16_t addr adres, pod którym zostanie zapisana konfiguracja
+	@param uint8_t t index timera
+*/
+void load_timersec_settings(uint16_t addr, uint8_t t) {
+	set_MIT(&timerssec[t].when,eeprom_read_byte(addr+EEPROM_TIMERSEC_WHEN_HOURS_OFFSET),eeprom_read_byte(addr+EEPROM_TIMERSEC_WHEN_MINUTES_OFFSET),MIT_DEFAULT_HOURS,MIT_DEFAULT_MINUTES);
+	eeprom_read_byte_and_set(addr+EEPROM_TIMERSEC_DURATION_OFFSET,&timerssec[t].duration,TIMERSSEC_MIN_SET_TIME,TIMERSSEC_MAX_SET_TIME,TIMERSSEC_DEFAULT_TIME);
+	outputs_assign(&timerssec[t].out,eeprom_read_byte(addr+EEPROM_TIMERSEC_OUT_OFFSET));
+	timerssec[t].flags = eeprom_read_byte(addr+EEPROM_TIMERSEC_FLAGS_OFFSET) & TIMERSSEC_FLAG_CONFIG_MASK;
+}
+

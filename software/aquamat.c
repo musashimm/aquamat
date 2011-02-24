@@ -205,6 +205,7 @@ int main(void)
 	load_timers_settings(EEPROM_TIMERS_SETTING_BEGIN);
 	load_timersv_settings(EEPROM_TIMERSV_SETTING_BEGIN);
 	load_topoff_settings(EEPROM_TOPOFF_SETTINGS_BEGIN);
+	load_timerssec_settings(EEPROM_TIMERSSEC_SETTINGS_BEGIN);
 
 	hd44780_printOnLcdDelay(PSTR(PROGRAM_FULL_NAME));
 	hd44780_clear();
@@ -371,10 +372,17 @@ int main(void)
 
 @section modules Moduły sterownika
 Celem łatwiejszej implementacji projekt został podzielony na moduły funkcjonalne. Poniższy rysunek przedstawia podstawowe zależności między modułami.
+
 @image html aquamat_moduly.png
+
+Staram się aby, aby funkcjonalności stetrownika miały budowę modułową. Dzięki temu, przy odpowiednich ustawieniach warunkowej kompilacji będzie można, pewne funkcję włączać lub wyłączać.
+
+@image html aquamat_module.png
+
 - \ref temp.c Kontrola temperatury
 - \ref top_off.c Automatyczna dolewka
 - \ref outputs.c Sterowanie wyjściami
+
 
 @section micro Mikrokontroler
 Sterownik implementowany jest w z wykorzystaniem mikrokontrolera z rodziny AVR 8-bit. W tej chwili prace opierają sie o model ATmega32. Poniżej zamieszczono przyporządkowanie poszczególnych pinów.
@@ -389,6 +397,7 @@ Ze względu na określone miejsce w szafce i wielkość projektu, część sprz�
 Zależność między modułami pokazano na poniższym schemacie:
 
 @image html hardware_1_X_X.png
+
 
 @page changes Historia zmian
 @section release_1_0_12 Wersja 1.0.12

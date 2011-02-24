@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	$Id$
 */
 
@@ -75,6 +75,20 @@ void eeprom_write_block(uint16_t addr,uint8_t *src,uint8_t n) {
 	}
 }
 
+/** Czyta jeden bajt z pamięci EEPROM i sprawdza czy wartość mieści się zakresie dozwolonych wartości. Jeżeli nie, przypisuje domyślną wartość
+	@param uint16_t addr adres bajtu  do odczytu
+	@param uint8_t *target wskaźnik miejsca gdzie mamy zapisać
+	@param uint8_t min wartość minimalna
+	@param uint8_t max wartość maksymalna
+	@param uint8_t defaults wartość domyślna
+*/
+void eeprom_read_byte_and_set (uint16_t addr,uint8_t *target,uint8_t min,uint8_t max,uint8_t defaults) {
+	*target = eeprom_read_byte(addr);
+	if (*target > max || *target < min) {
+		*target = defaults;
+	}
+}
+
 void load_temp_sensor_settings(uint16_t addr,uint8_t sens) {
 	eeprom_read_block(sens*EEPROM_TEMP_SIZE+addr+EEPROM_TEMP_ROM_OFFSET,&(temp_sensors[sens].rom[0]),8);
  	temp_sensors[sens].target = eeprom_read_word(sens*EEPROM_TEMP_SIZE+addr+EEPROM_TEMP_TARGET_OFFSET);
@@ -103,7 +117,7 @@ void load_temp_sensor_settings(uint16_t addr,uint8_t sens) {
 	//temp_sensors[sens].out_heating = eeprom_read_byte(sens*EEPROM_TEMP_SIZE+addr+EEPROM_TEMP_OUT_HEATING);
 	//temp_sensors[sens].out_cooling = eeprom_read_byte(sens*EEPROM_TEMP_SIZE+addr+EEPROM_TEMP_OUT_COOLING);
 }
- 
+
 void load_temp_sensors_settings (uint16_t addr) {
  	uint8_t i;
  	for (i=0;i<TEMP_SENSORS_NUM;i++) {
@@ -170,7 +184,7 @@ void load_timer_settings(uint16_t addr, uint8_t t) {
 	outputs_assign(&timers[t].out,eeprom_read_word(addr+EEPROM_TIMERS_OUT_OFFSET));
 	//timers[t].out = eeprom_read_word(addr+EEPROM_TIMERS_OUT_OFFSET);
 
-	
+
 	timers[t].flags = eeprom_read_word(addr+EEPROM_TIMERS_FLAGS_OFFSET);
 }
 
