@@ -119,7 +119,7 @@ void timerssec_when_notactive(void) {
 void ui_timerssec_settings_display(void) {
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,timerssec[menu_unit()].out);
+		load_name(timerssec[menu_unit()].out * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		tmp_var = (timerssec[menu_unit()].flags & TIMERSSEC_FLAG_WDAY_MASK) >> 1;
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}

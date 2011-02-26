@@ -47,6 +47,7 @@
 #include "qbuttons.h"
 #include "menu.h"
 #include "timerssec.h"
+#include "pwm.h"
 
 /** Wskaźnik do funkcji restart.
 */
@@ -116,6 +117,10 @@ ISR (TIMER1_COMPA_vect) {
 	pinD = PIND;						    // co 10ms sprwawdzenie stanu klawiszy
 	if (counterKey < UINT8_T_DISABLED) { counterKey++; }
 
+	pwm_to_port();
+
+	//PWM_PORTOUT ^= _BV(0);
+
 	if (!(--clock10ms)) {					//############### minęło pół sekundy
     	clock10ms=TICKS;
 		SSF(FLAG_HALF_SECOND_PAST);
@@ -184,6 +189,8 @@ void ioinit(void)
 	BUZZER_DDR |= _BV(BUZZER_SWITCH);
 	buzzer_off();
 
+	pwm_init();
+
 	wdt_enable(WDTO_2S);
 }
 
@@ -206,6 +213,7 @@ int main(void)
 	load_timersv_settings(EEPROM_TIMERSV_SETTING_BEGIN);
 	load_topoff_settings(EEPROM_TOPOFF_SETTINGS_BEGIN);
 	load_timerssec_settings(EEPROM_TIMERSSEC_SETTINGS_BEGIN);
+	load_pwms_settings(EEPROM_PWM_SETTINGS_BEGIN);
 
 	hd44780_printOnLcdDelay(PSTR(PROGRAM_FULL_NAME));
 	hd44780_clear();

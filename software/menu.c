@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	$Id$
 */
 
@@ -88,7 +88,7 @@ void menu_top (enum MENU_KEY key) {
 }
 
 void menu_submenu_top (enum MENU_KEY key) {
-	if (key_pressed == key) {      
+	if (key_pressed == key) {
 		ms.submenu_id = 0;
 		ms.unit_id = 0;
 		menu_reset_phase();
@@ -105,12 +105,12 @@ void menu_submenu_next (enum MENU_KEY key) {
 }
 
 void menu_submenu_prev (enum MENU_KEY key) {
-	if (key_pressed == key) {  
+	if (key_pressed == key) {
 		if ( ms.submenu_id == 1 ) {
 			ms.submenu_id = pgm_read_byte(&MENU_LENGTH[ms.menu_id+1]) - 1;
 		} else {
 			ms.submenu_id--;
-		} 
+		}
 		menu_reset_phase();
 	}
 }
@@ -285,10 +285,16 @@ void menu_mod_bit(uint8_t posx,uint8_t posy,uint8_t *var,uint8_t bit) {
 	menu_key_phase_up(SET);
 }
 
+/** Modyfikacja zmiennej tekstowej.
+	@param uint8_t posx pozycja X na LCD
+	@param uint8_t posy pozycja Y na LCD
+	@param char* var zmienna przechowująca znaki
+	@param uint8_t base faza, w której zaczyna się modyfikacja
+*/
 void menu_mod_char(uint8_t posx,uint8_t posy,char *var,uint8_t base) {
 	menu_reset_phase_key(ESC);
 	hd44780_goto(posx,posy+ms.mod_phase-base);
-	menu_inc_uint8(UP,(uint8_t*)(var+ms.mod_phase-base),OUTPUTS_NAME_MAX_CHAR,FALSE); 
-	menu_dec_uint8(DOWN,(uint8_t*)(var+ms.mod_phase-base),OUTPUTS_NAME_MIN_CHAR,FALSE);
+	menu_inc_uint8(UP,(uint8_t*)(var+ms.mod_phase-base),NAME_MAX_CHAR,FALSE);
+	menu_dec_uint8(DOWN,(uint8_t*)(var+ms.mod_phase-base),NAME_MIN_CHAR,FALSE);
 	menu_key_phase_up(SET);
 }

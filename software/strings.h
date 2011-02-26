@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	$Id: com_menu.c 41 2009-02-23 23:01:59Z musashi@todryk.pl $
 */
 
@@ -61,6 +61,7 @@ extern PROGMEM char OK_S[];
 extern PROGMEM char OUT_NONAME_S[];
 extern PROGMEM char ON_S[];
 extern PROGMEM char OUT_S[];
+extern PROGMEM char OUTPWM_S[];
 extern PROGMEM char PAR_S[];
 extern PROGMEM char RO_S[];
 extern PROGMEM char SLASH_S[];

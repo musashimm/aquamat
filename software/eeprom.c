@@ -32,7 +32,7 @@
 #include "top_off.h"
 #include "hd44780.h"
 
-char output_name[EEPROM_OUTS_NAME_LENGTH+1];
+char name[NAME_LENGTH+1];
 
 void eeprom_write_byte(uint16_t addr,uint8_t byte) {
 	while(EECR & _BV(EEWE));
@@ -254,24 +254,22 @@ void save_basic_settings(uint16_t addr) {
 	eeprom_write_byte(addr+EEPROM_BASIC_SETTINGS_DTT_M_O,daytime_to.minutes);
 }
 
-void load_output_name(uint16_t addr,uint8_t o) {
+void load_name(uint16_t addr) {
 	uint8_t i,c;
-	if (o < OUTPUTS_NUM) {
-		for (i=0;i<EEPROM_OUTS_NAME_LENGTH;i++) {
-			c = eeprom_read_byte(o * EEPROM_OUTS_SIZE + i + EEPROM_OUTS_NAME_OFF + addr);
-			if (c < OUTPUTS_NAME_MIN_CHAR || c > OUTPUTS_NAME_MAX_CHAR ) {
-				output_name[i] = OUTPUTS_NAME_DEF_CHAR;
-			} else {
-				output_name[i] = c;
-			}
+	for (i=0;i < NAME_LENGTH;i++) {
+		c = eeprom_read_byte(addr + i);
+		if (c < NAME_MIN_CHAR || c > NAME_MAX_CHAR ) {
+			name[i] = NAME_DEF_CHAR;
+		} else {
+			name[i] = c;
 		}
 	}
 }
 
-void save_output_name(uint16_t addr,uint8_t o) {
+void save_name(uint16_t addr) {
 	uint8_t i;
-	for (i=0;i<EEPROM_OUTS_NAME_LENGTH;i++) {
- 		eeprom_write_byte(o * EEPROM_OUTS_SIZE + i + EEPROM_OUTS_NAME_OFF + addr,output_name[i]);
+	for (i=0;i < NAME_LENGTH;i++) {
+ 		eeprom_write_byte(addr + i,name[i]);
  	}
 }
 

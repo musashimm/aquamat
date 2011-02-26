@@ -19,6 +19,9 @@
 	$Id: aquamat.h 48 2009-03-27 21:37:50Z musashi@todryk.pl $
 */
 
+#ifndef AQUAMAT_H
+#define AQUAMAT_H
+
 /** @file aquamat.h
 	@brief Plik nagłówkowy - Główna pętla programowa.
 */
@@ -81,7 +84,7 @@ typedef uint16_t TEMP;
 
 #define PROGRAM_NAME "Aquamat"
 #define PROGRAM_VERSION_MAIN 1
-#define PROGRAM_VERSION_MAJOR 1
+#define PROGRAM_VERSION_MAJOR 3
 #define PROGRAM_VERSION_MINOR 0
 #define PROGRAM_FULL_NAME  "    " PROGRAM_NAME "\n  wersja " STRINGIFY(PROGRAM_VERSION_MAIN) "." STRINGIFY(PROGRAM_VERSION_MAJOR) "." STRINGIFY(PROGRAM_VERSION_MINOR)
 
@@ -177,4 +180,6 @@ extern volatile uint8_t pinD;
 extern volatile uint8_t temp_counter;
 
 void(*restart)(void);
+
+#endif
 

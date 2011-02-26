@@ -20,6 +20,11 @@
 */
 
 #include "pwm.h"
+#include "menu.h"
+#include "eeprom.h"
+#include "timerssec.h"
+#include "strings.h"
+#include "hd44780.h"
 
 /** @file pwm.c
 	@brief Implementacja wyjść PWM.
@@ -48,7 +53,7 @@ inline
 void pwm_to_port(void) {
 	uint8_t i;
 	for (i=0;i < PWM_NUM;i++) {
-		if (clock10ms <= pwms[i].width) {
+		if (clock10ms * 2 <= pwms[i].width) {
 			PWM_PORTOUT |= _BV(i);
 		} else {
 			PWM_PORTOUT &= ~_BV(i);
@@ -61,62 +66,81 @@ void pwm_to_port(void) {
 void ui_pwm_settings_display(void) {
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,menu_unit());
-		tmp_var = outputs[menu_unit()].flags & OUTPUTS_QBUTTONS_MASK;
+		load_name(menu_unit() * EEPROM_PWM_SIZE + EEPROM_PWM_SETTINGS_BEGIN + EEPROM_PWM_NAME_OFFSET);
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}
 
-	hd44780_label(OUT_S,FALSE,FALSE);
-	hd44780_out8dec(menu_unit()+1);
+	hd44780_label(OUTPWM_S,FALSE,FALSE);
+	hd44780_out4hex(menu_unit()+1);
 	hd44780_outstrn_P(SPACE_S);
-	hd44780_label(BL_S,FALSE,FALSE);
-	hd44780_switch_state(output_check_flag(menu_unit(),OUTPUT_BLOCK_FLAG),FALSE);
-	hd44780_outstrn_P(SPACE_S);
-	hd44780_label(AKT_S,FALSE,FALSE);
-	hd44780_switch_state(!output_check_flag(menu_unit(),OUTPUT_ACTIVE_FLAG),FALSE);
+	hd44780_outstrn_P(PSTR("P="));
+	hd44780_out8dec3(pwms[menu_unit()].width);
+	hd44780_outstrn_P(PSTR("%"));
 	hd44780_next_line();
-	hd44780_label(QB_S,TRUE,FALSE);
-	if (tmp_var >= OUTPUTS_QBUTTONS_NUM) {
-		tmp_var = OUTPUTS_QBUTTONS_NUM;
-		hd44780_outstrn_P(MINUS_S);
-	} else {
-		hd44780_out4hex(tmp_var+1);
-	}
-	hd44780_outstrn_P(SPACE_S);
+
+	hd44780_outstrn_P(PAR_S);
 	hd44780_label(NZW_S,TRUE,FALSE);
-	hd44780_outstrn(output_name);
-	hd44780_outstrn_P(SPACE_S);
+	hd44780_outstrn(name);
+	hd44780_outstrn_P(PAR_S);
 
 	switch (menu_phase()) {
 	case 0:
-		menu_standard_unit(OUTPUTS_NUM);
+		menu_standard_unit(PWM_NUM);
 		break;
 	case 1:
 		menu_set_phase();
 		break;
 	case 2:
-		menu_mod_bit(1,10,&(outputs[menu_unit()].flags),OUTPUT_BLOCK_FLAG);
+		menu_mod_uint8(1,13,&pwms[menu_unit()].width,0,PWM_MAX_WIDTH,FALSE);
 		break;
 	case 3:
-		menu_mod_bit(1,16,&(outputs[menu_unit()].flags),OUTPUT_ACTIVE_FLAG);
-		SOUTF(OUTPUTS_CHANGE_FLAG);
-		break;
 	case 4:
-		menu_mod_uint8(2,5,&tmp_var,0,OUTPUTS_QBUTTONS_NUM,FALSE);
-		break;
 	case 5:
 	case 6:
 	case 7:
-	case 8:
-	case 9:
-		menu_mod_char(2,12,output_name,5);
+		menu_mod_char(2,10,name,3);
 		break;
-	case 10:
-		outputs[menu_unit()].flags &= ~OUTPUTS_QBUTTONS_MASK;
-		outputs[menu_unit()].flags |= tmp_var;
-		save_output_settings(EEPROM_OUTS_SETTING_BEGIN,menu_unit());
-		save_output_name(EEPROM_OUTS_SETTING_BEGIN,menu_unit());
+	case 8:
+		save_pwm_settings(menu_unit() * EEPROM_PWM_SIZE + EEPROM_PWM_SETTINGS_BEGIN,menu_unit());
+		save_name(menu_unit() * EEPROM_PWM_SIZE + EEPROM_PWM_SETTINGS_BEGIN + EEPROM_PWM_NAME_OFFSET);
 		menu_reset_phase();
+	}
+}
+
+/** Wczytuje konfigurację wszystkich wyjść PWM.
+*/
+void load_pwms_settings(uint16_t addr) {
+	uint8_t i;
+ 	for (i=0;i < PWM_NUM;i++) {
+ 		load_pwm_settings(i * EEPROM_PWM_SIZE + addr,i);
+ 	}
+}
+
+/** Zapisuje konfigurację wszystkich wyjść PWM.
+*/
+void save_pwms_settings (uint16_t addr) {
+	uint8_t i;
+ 	for (i=0;i < PWM_NUM;i++) {
+ 		save_pwm_settings(i * EEPROM_PWM_SIZE + addr,i);
+ 	}
+}
+
+/** Zapisuje konfigurację jednego wyjścia PWM.
+	@param uint16_t base_addr adres bazowy, pod który będzie zapisana konfiguracja
+	@param uint8_t o index wyjścia PWM.
+*/
+void save_pwm_settings(uint16_t base_addr,uint8_t o) {
+	eeprom_write_byte(base_addr + EEPROM_PWM_WIDTH_OFFSET,pwms[o].width);
+}
+
+/** Wczytuje konfigurację wszystkich wyjść PWM.
+	@param uint16_t addr adres, pod którym zostanie zapisana konfiguracja
+	@param uint8_t o index wyjścia PWM.
+*/
+void load_pwm_settings(uint16_t base_addr, uint8_t o) {
+	pwms[o].width = eeprom_read_byte(base_addr + EEPROM_PWM_WIDTH_OFFSET);
+	if (pwms[o].width > PWM_MAX_WIDTH) {
+		pwms[o].width = 0;
 	}
 }
 

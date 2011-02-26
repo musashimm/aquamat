@@ -9,7 +9,7 @@ vpath %.elf $(SRCS_DIR)
 vpath %.lst $(SRCS_DIR)
 
 _OBJS         = menu.o qbuttons.o top_off.o alarms.o comm_gui.o eeprom.o hd44780.o io.o log.o one_wire.o outputs.o \
-rtc.o strings.o temp.o timers.o timersv.o ui.o usart.o twi.o timerssec.o time.o aquamat.o
+rtc.o strings.o temp.o timers.o timersv.o ui.o usart.o twi.o timerssec.o time.o pwm.o aquamat.o
 OBJS = $(patsubst %,$(SRCS_DIR)/%,$(_OBJS))
 
 #MCU_TARGET     = at90s2313

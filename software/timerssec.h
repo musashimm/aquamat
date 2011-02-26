@@ -22,6 +22,8 @@
 #ifndef TIMERSSEC_H
 #define TIMERSSEC_H
 
+#include "time.h"
+
 /** @file timerssec.h
 	@brief Plik nagłówkowy - Implementacja timerów sekundowych.
 */
@@ -29,9 +31,6 @@
 /** @struct TIMERSEC
 	@brief Struktura przechowywująca dane o timerze sekundowym.
 */
-
-#include "time.h"
-
 struct TIMERSEC {
 	struct MIT when; 	/**< Czas, od którego timer jest włączony. Struktura \ref MIT "MIT".*/
 	uint8_t duration; 	/**< Czas w sekundach, przez jaki będzie timer.*/

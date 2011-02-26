@@ -34,6 +34,11 @@
 #define PWM_PORTOUT PORT(PWM_PORT)
 #define PWM_DDR DDR(PWM_PORT)
 #define PWM_NUM 4
+#define PWM_MAX_WIDTH 100
+
+#define EEPROM_PWM_WIDTH_OFFSET 0
+#define EEPROM_PWM_NAME_OFFSET 1
+#define EEPROM_PWM_SIZE (EEPROM_PWM_NAME_OFFSET + NAME_LENGTH)
 
 /** @struct PWM
 	@brief Struktura przechowywująca dane o wyjściu PWM.
@@ -45,5 +50,9 @@ struct PWM {
 void pwm_init(void);
 void pwm_to_port(void);
 void ui_pwm_settings_display(void);
+void load_pwm_settings(uint16_t,uint8_t);
+void save_pwm_settings(uint16_t,uint8_t);
+void load_pwms_settings(uint16_t);
+void save_pwms_settings(uint16_t);
 
 #endif

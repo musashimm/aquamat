@@ -41,8 +41,7 @@
 #define EEPROM_OUTS_SETTING_BEGIN ((EEPROM_TEMP_SIZE*TEMP_SENSORS_NUM)+EEPROM_TEMP_SETTINGS_BEGIN)
 #define EEPROM_OUTS_SETS_OFF 0
 #define EEPROM_OUTS_NAME_OFF 1
-#define EEPROM_OUTS_NAME_LENGTH 5
-#define EEPROM_OUTS_SIZE (EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_NAME_LENGTH)
+#define EEPROM_OUTS_SIZE (EEPROM_OUTS_NAME_OFF + NAME_LENGTH)
 
 #define EEPROM_TIMERS_SETTING_BEGIN ((OUTPUTS_NUM * EEPROM_OUTS_SIZE) + EEPROM_OUTS_SETTING_BEGIN)
 #define EEPROM_TIMERS_FROM_HOURS_OFFSET 0
@@ -75,6 +74,8 @@
 
 #define EEPROM_TIMERSSEC_SETTINGS_BEGIN (EEPROM_TOPOFF_SETTINGS_BEGIN + EEPROM_TOPOFF_SIZE)
 
+#define EEPROM_PWM_SETTINGS_BEGIN (EEPROM_TIMERSEC_SIZE * TIMERSSEC_NUM + EEPROM_TIMERSSEC_SETTINGS_BEGIN)
+
 void eeprom_write_byte(uint16_t,uint8_t);
 uint8_t eeprom_read_byte(uint16_t);
 void eeprom_write_word(uint16_t,uint16_t);
@@ -105,7 +106,7 @@ void save_timerv_settings(uint16_t, uint8_t);
 void load_timersv_settings (uint16_t);
 void save_timersv_settings (uint16_t);
 
-void load_output_name(uint16_t ,uint8_t);
-void save_output_name(uint16_t ,uint8_t);
+void load_name(uint16_t);
+void save_name(uint16_t);
 
-extern char output_name[EEPROM_OUTS_NAME_LENGTH+1];
+extern char name[NAME_LENGTH+1];

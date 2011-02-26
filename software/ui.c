@@ -41,6 +41,7 @@
 #include "timers.h"
 #include "timersv.h"
 #include "timerssec.h"
+#include "pwm.h"
 
 extern uint8_t minutes;
 extern uint8_t hours;
@@ -58,7 +59,8 @@ volatile uint8_t oldRotate;
 
 PROGMEM char STATUS_MENU_S[] = "";
 PROGMEM char ALARMS_MENU_S[] =  ". Alarmy        \n                ";
-PROGMEM char OUTPUTS_MENU_S[] = ". Wyjscia       \n                ";
+PROGMEM char OUTPUTS_MENU_S[] = ". Wyjscia       \n binarne        ";
+PROGMEM char PWM_MENU_S[] =     ". Wyjscia       \n PWM            ";
 PROGMEM char AD_MENU_S[] =      ". Automatyczna  \n dolewka        ";
 PROGMEM char TEMP_MENU_S[] =    ". Kontrola      \n temperatury    ";
 PROGMEM char TIME_MENU_S[] =    ". Ustawienia    \n czasu          ";
@@ -78,6 +80,7 @@ PGM_P MENU0_STRS[] PROGMEM =
 	STATUS_MENU_S,
 	ALARMS_MENU_S,
 	OUTPUTS_MENU_S,
+	PWM_MENU_S,
 	AD_MENU_S,
 	TEMP_MENU_S,
 	TIME_MENU_S,
@@ -88,8 +91,9 @@ PGM_P MENU0_STRS[] PROGMEM =
 
 PROGMEM FuncPtr FuncPtrTable[] = {
 	status_rotate,status_outputs,status_temp,status_ad,						//4
-	ui_menu_0,ui_alarms_display,ui_alarms_clear,ui_alarms_block,			//3
+	ui_menu_0,ui_alarms_display,ui_alarms_clear,ui_alarms_block,			//4
 	ui_menu_0,ui_outputs_settings_display,									//2
+	ui_menu_0,ui_pwm_settings_display,										//2
 	ui_menu_0,ui_topoff_clear_max_run,ui_topoff_settings_display,			//3
 	ui_menu_0,ui_temp_settings_display,ui_temp_outputs_cooling_display,ui_temp_outputs_heating_display,ui_temp_param_display,ui_temp_sensor_discover,													//6
 	ui_menu_0,ui_time_set_hours,ui_time_set_day,							//3
@@ -99,16 +103,17 @@ PROGMEM FuncPtr FuncPtrTable[] = {
 };
 
 PROGMEM const uint8_t MENU_LENGTH[] = {
-	9,
+	10,
 	4, //0
 	4, //1
 	2, //2
-	3, //3
-	6, //4
-	3, //5
-	2, //6
+	2, //3
+	3, //4
+	6, //5
+	3, //6
 	2, //7
 	2, //8
+	2, //9
 };
 
 void ui_init (void) {
@@ -443,7 +448,7 @@ void ui_temp_settings_display(void) {
 void ui_temp_outputs_heating_display(void) {
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,temp_sensors[menu_unit()].out_heating);
+		load_name(temp_sensors[menu_unit()].out_heating * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}
 
@@ -478,7 +483,7 @@ void ui_temp_outputs_heating_display(void) {
 void ui_temp_outputs_cooling_display(void) {
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,temp_sensors[menu_unit()].out_cooling);
+		load_name(temp_sensors[menu_unit()].out_cooling * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}
 
@@ -569,7 +574,7 @@ void ui_temp_sensor_discover(void) {
 void ui_timersv_settings_display(void) {
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,timersv[menu_unit()].out);
+		load_name(timersv[menu_unit()].out * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}
 
@@ -613,7 +618,7 @@ void ui_timersv_settings_display(void) {
 void ui_timers_settings_display(void) {
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,timers[menu_unit()].out);
+		load_name(timers[menu_unit()].out * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		tmp_var = (timers[menu_unit()].flags & TIMERS_FLAG_WDAY_MASK) >> 1;
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}
@@ -670,7 +675,7 @@ void ui_timers_settings_display(void) {
 void ui_outputs_settings_display(void) {
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,menu_unit());
+		load_name(menu_unit() * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		tmp_var = outputs[menu_unit()].flags & OUTPUTS_QBUTTONS_MASK;
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}
@@ -693,7 +698,7 @@ void ui_outputs_settings_display(void) {
 	}
 	hd44780_outstrn_P(SPACE_S);
 	hd44780_label(NZW_S,TRUE,FALSE);
-	hd44780_outstrn(output_name);
+	hd44780_outstrn(name);
 	hd44780_outstrn_P(SPACE_S);
 
 	switch (menu_phase()) {
@@ -718,13 +723,13 @@ void ui_outputs_settings_display(void) {
 	case 7:
 	case 8:
 	case 9:
-		menu_mod_char(2,12,output_name,5);
+		menu_mod_char(2,12,name,5);
 		break;
 	case 10:
 		outputs[menu_unit()].flags &= ~OUTPUTS_QBUTTONS_MASK;
 		outputs[menu_unit()].flags |= tmp_var;
 		save_output_settings(EEPROM_OUTS_SETTING_BEGIN,menu_unit());
-		save_output_name(EEPROM_OUTS_SETTING_BEGIN,menu_unit());
+		save_name(menu_unit() * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		menu_reset_phase();
 	}
 }
@@ -762,7 +767,7 @@ void ui_topoff_settings_display(void) {
 	}
 
 	if (!MENU_F(MENU_VARS_LOADED_FLAG)) {
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,top_off.out);
+		load_name(top_off.out * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 		MENU_SF(MENU_VARS_LOADED_FLAG);
 	}
 	hd44780_label(PSTR("AD"),FALSE,FALSE);
@@ -922,7 +927,7 @@ void display_out_long(uint8_t id) {				// LCD zajmuje 10 znaków
 		hd44780_switch_state(!(output_check_flag(id,OUTPUT_ACTIVE_FLAG)),output_check_flag(id,OUTPUT_BLOCK_FLAG));
 		hd44780_out8dec(id+1);
 		hd44780_outstrn_P(SLASH_S);
-		hd44780_outstrn(output_name);
+		hd44780_outstrn(name);
 	}
 }
 

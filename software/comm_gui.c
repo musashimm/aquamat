@@ -38,6 +38,7 @@
 #include "timers.h"
 #include "timersv.h"
 #include "log.h"
+#include "pwm.h"
 
 extern uint8_t minutes;
 extern uint8_t hours;
@@ -569,9 +570,9 @@ void gui_out_get_settings(void) {
 	gui_command_start(GUI_OUT_COMMAND,GUI_SUBCOMMAND_GET_SETTINGS_RESPONSE);
 	for (i=0;i<OUTPUTS_NUM;i++) {
 		gui_command_data(outputs[i].flags);
-		load_output_name(EEPROM_OUTS_SETTING_BEGIN,i);
-		for(j=0;j<EEPROM_OUTS_NAME_LENGTH;j++) {
-			gui_command_data(output_name[j]);
+		load_name(i * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
+		for(j=0;j<NAME_LENGTH;j++) {
+			gui_command_data(name[j]);
 		}
 	}
 	gui_command_end();
@@ -586,10 +587,10 @@ void gui_out_set(void) {
 	outputs[id].flags |= gui_get_next();
 	save_output_settings(EEPROM_OUTS_SETTING_BEGIN,id);
 
-	for(i=0;i<EEPROM_OUTS_NAME_LENGTH;i++) {
-		output_name[i] = gui_get_next();
+	for(i=0;i<NAME_LENGTH;i++) {
+		name[i] = gui_get_next();
 	}
-	save_output_name(EEPROM_OUTS_SETTING_BEGIN,id);
+	save_name(id * EEPROM_OUTS_SIZE + EEPROM_OUTS_NAME_OFF + EEPROM_OUTS_SETTING_BEGIN);
 	gui_cm_return_status_unit(GUI_COMMAND_OK,GUI_OUT_COMMAND,GUI_SUBCOMMAND_SET,id);
 }
 

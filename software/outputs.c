@@ -55,7 +55,7 @@ void outputs_init(void) {
 	for (i=0;i<OUTPUTS_NUM;i++) {
 		outputs[i].flags=0x8F;
 	}
-	output_name[EEPROM_OUTS_NAME_LENGTH]=0;
+	name[NAME_LENGTH]=0;
 }
 
 /** W przypadku kiedy flaga \ref OUTPUTS_CHANGE_FLAG w jest ustawiona należy zaktualizować stan wyjść.

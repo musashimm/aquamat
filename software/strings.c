@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	$Id: com_menu.c 41 2009-02-23 23:01:59Z musashi@todryk.pl $
 */
 
@@ -37,7 +37,7 @@ PROGMEM char RTC_KAZ_STR[] ="Ka";
 /** @var PGM_P RTC_WDAYS_STRS[] PROGMEM
 	Dni tygodnia.
 */
-PGM_P RTC_WDAYS_STRS[] PROGMEM = 
+PGM_P RTC_WDAYS_STRS[] PROGMEM =
 {
 	RTC_SUN_STR,
 	RTC_MON_STR,
@@ -85,6 +85,7 @@ PROGMEM char MINUSMINUSMINUS_S[] = "---";
 // PROGMEM char ON_S[] ="Wl. ";
 // PROGMEM char OUT_NONAME_S[] ="_____";
 PROGMEM char OUT_S[] ="Wy";
+PROGMEM char OUTPWM_S[] ="WyPWM";
 PROGMEM char PAR_S[] = "    ";
 PROGMEM char RO_S[] = "R";
 PROGMEM char SLASH_S[] = "/";
