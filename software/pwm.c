@@ -19,6 +19,7 @@
 	$Id$
 */
 
+#include <avr/interrupt.h>
 #include "pwm.h"
 #include "menu.h"
 #include "eeprom.h"
@@ -44,20 +45,44 @@ struct PWM pwms[PWM_NUM];
 /** Inicjalizacja wyjść PWM
 */
 void pwm_init(void) {
+
 	PWM_DDR |= PWM_PINS;
+
+	TCCR0 = _BV(WGM01) |_BV(CS01);	// clock / 8 - wyserowanie na porównanie 1/8000000*25*8*4*100
+	OCR0 = PWM_TIMER_TAU;			// wartość licznika CTC
+	TIMSK |= _BV(OCIE0);			// przerwanie na porównanie
 }
 
-/** Procedura ustawienia pwm na porcie.
+/** Procedura przerwania ustawiająca pwm na porcie.
 */
-inline
-void pwm_to_port(void) {
+ISR (TIMER0_COMP_vect) {
+
+	static volatile uint8_t clock1_4_1_10ms;
+	static volatile uint8_t clock1_10ms;
 	uint8_t i;
-	for (i=0;i < PWM_NUM;i++) {
-		if (clock10ms * 2 <= pwms[i].width) {
-			PWM_PORTOUT |= _BV(i);
-		} else {
-			PWM_PORTOUT &= ~_BV(i);
+
+	if(!(--clock1_4_1_10ms)) {
+		clock1_4_1_10ms = 4;
+		if(!(--clock1_10ms)) {
+			clock1_10ms = 100;
 		}
+		for (i=0;i < PWM_NUM;i++) {
+			if (clock1_10ms <= pwms[i].width) {
+				PWM_PORTOUT |= _BV(i);
+			} else {
+				PWM_PORTOUT &= ~_BV(i);
+			}
+		}
+	}
+}
+
+/** Ustawia żądaną wartość PWM na wyjście.
+	@param uint8_t oidx index wyjścia,
+	@param uint8_t pwm wartość PWM.
+*/
+void pwm_set(uint8_t oidx,uint8_t pwm) {
+	if (oidx < PWM_NUM) {
+		pwms[oidx].width = pwm;
 	}
 }
 

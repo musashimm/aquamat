@@ -117,10 +117,6 @@ ISR (TIMER1_COMPA_vect) {
 	pinD = PIND;						    // co 10ms sprwawdzenie stanu klawiszy
 	if (counterKey < UINT8_T_DISABLED) { counterKey++; }
 
-	pwm_to_port();
-
-	//PWM_PORTOUT ^= _BV(0);
-
 	if (!(--clock10ms)) {					//############### minęło pół sekundy
     	clock10ms=TICKS;
 		SSF(FLAG_HALF_SECOND_PAST);
