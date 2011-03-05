@@ -90,7 +90,7 @@ PGM_P MENU0_STRS[] PROGMEM =
 };
 
 PROGMEM FuncPtr FuncPtrTable[] = {
-	status_rotate,status_outputs,status_temp,status_ad,						//4
+	status_rotate,status_outputs,status_temp,status_ad,status_pwm,			//5
 	ui_menu_0,ui_alarms_display,ui_alarms_clear,ui_alarms_block,			//4
 	ui_menu_0,ui_outputs_settings_display,									//2
 	ui_menu_0,ui_pwm_settings_display,										//2
@@ -104,7 +104,7 @@ PROGMEM FuncPtr FuncPtrTable[] = {
 
 PROGMEM const uint8_t MENU_LENGTH[] = {
 	10,
-	4, //0
+	5, //0
 	4, //1
 	2, //2
 	2, //3
@@ -172,16 +172,17 @@ void status_rotate (void) {
 
  	switch (seconds/10) {
  		case 0:
- 		case 3:
-				ui_outputs_status_display();
-				break;
-		case 1:
+			ui_temp_status_display();
+			break;
+ 		case 2:
+			top_off_status_display();
+			break;
 		case 4:
-				top_off_status_display();
-				break;
+			pwm_status_display();
+			break;
  		default:
-				ui_temp_status_display();
-				break;
+			ui_outputs_status_display();
+			break;
  	}
 	menu_next(UP);
 	menu_prev(DOWN);
@@ -206,6 +207,14 @@ void status_temp(void) {
 
 void status_ad(void) {
 	top_off_status_display();
+	menu_next(UP);
+	menu_prev(DOWN);
+	menu_submenu_next(SET);
+	menu_top(ESC);
+}
+
+void status_pwm(void) {
+	pwm_status_display();
 	menu_next(UP);
 	menu_prev(DOWN);
 	menu_submenu_next(SET);

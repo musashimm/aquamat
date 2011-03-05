@@ -188,3 +188,24 @@ uint8_t pwm_check_flag(uint8_t id,uint8_t flag) {
     }
 }
 
+/** Status wyjść PWM.
+*/
+void pwm_status_display(void) {
+	pwm_status(0);
+	pwm_status(1);
+	hd44780_goto(2,1);
+	pwm_status(2);
+	pwm_status(3);
+}
+
+/** Status pojedynczego wyjścia.
+	@param uint8_t o index wyjscia PWM.
+*/
+void pwm_status(uint8_t o) {
+	hd44780_outstrn_P(SPACE_S);
+	hd44780_switch_state(pwm_check_flag(o,PWM_FLAG_BLOCKED),FALSE);
+	hd44780_outstrn_P(SPACE_S);
+	hd44780_out8dec3(pwms[o].width);
+	hd44780_outstrn_P(PSTR("%"));
+	hd44780_outstrn_P(SPACE_S);
+}

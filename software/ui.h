@@ -45,6 +45,7 @@ void status_rotate (void);
 void status_outputs(void);
 void status_temp(void);
 void status_ad(void);
+void status_pwm(void);
 void lcd_temp_sensor(uint8_t t);
 void lcd_clock(void);
 void lcd_outputs_status(void);
