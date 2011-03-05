@@ -76,7 +76,7 @@ void set_MIT(struct MIT *mit,uint8_t hours,uint8_t minutes,uint8_t default_hours
 
 /** Sprawdza czy struktura MIT zawiera dopuszczalne wartości.
 	@param *mit wskaźnik do struktury
-    @return  \ref TRUE - zawiera niedopuszczalne wartości, \ref FALSE - zawiera dopuszczalne wartości
+    @return \ref TRUE - zawiera niedopuszczalne wartości, \ref FALSE - zawiera dopuszczalne wartości
 */
 uint8_t is_not_valid_MIT(struct MIT *mit) {
 	if (mit->hours > MIT_MAX_HOURS || mit->minutes > MIT_MAX_MINUTES) {
@@ -84,4 +84,19 @@ uint8_t is_not_valid_MIT(struct MIT *mit) {
 	} else {
 		return FALSE;
 	}
+}
+
+/** Dodaje minuty do struktury \ref MIT.
+    @param struct MIT* time wskaźnik na strukturę
+    @param uint8_t minutes liczba minut
+    @warning Brak sprawdzenia przekroczenia zakresu zmiennych.
+*/
+void add_minutes (struct MIT* time, uint8_t minutes) {
+    time->minutes += minutes;
+    while(time->minutes >= 60) {
+        time->minutes -= 60;
+        if (++time->hours >= 24) {
+            time->hours=0;
+        }
+    }
 }

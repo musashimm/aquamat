@@ -16,45 +16,12 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-	$Id:$
+	$Id$
 */
 
-#ifndef TIME_H
-#define TIME_H
-
-/** @file time.h
-	@brief Plik nagłówkowy - Funkcje związane z obsługą czasu.
+/** @file sun.c
+	@brief Implementacja scenariusza "SUN". Symulacja wschodu i zachodu słońca.
 */
 
-#include "aquamat.h"
+#include "sun.h"
 
-/** @struct MIT
-	@brief Struktura przechowująca czas (ang. moment in time).
-*/
-struct MIT {
-	uint8_t hours; 		/**<Godziny.*/
-	uint8_t minutes;	/**<Minuty.*/
-};
-
-/** Domyślna wartość godziny dla struktury MIT
-*/
-#define MIT_DEFAULT_HOURS 12
-
-/** Domyślna wartość minut dla struktury MIT
-*/
-#define MIT_DEFAULT_MINUTES 1
-
-/** Maksymalna godzina
-*/
-#define MIT_MAX_HOURS 23
-
-/** Maksymalna minuta
-*/
-#define MIT_MAX_MINUTES 59
-
-uint8_t is_not_valid_MIT(struct MIT*);
-void set_MIT(struct MIT *,uint8_t,uint8_t,uint8_t,uint8_t);
-uint8_t check_is_wday(uint8_t,uint8_t);
-uint8_t check_if_its_time(struct MIT*);
-
-#endif

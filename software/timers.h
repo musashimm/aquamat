@@ -23,12 +23,11 @@
 	@brief Plik nagłówkowy - Implementacja timerów.
 */
 
+#include "time.h"
+
 /** @struct TIMER
 	@brief Struktura przechowywująca dane o timerze.
 */
-
-#include "time.h"
-
 struct TIMER {
         struct MIT from; /**< Czas, od którego timer jest włączony. Struktura \ref MIT "MIT".*/
         struct MIT to;   /**< Czas, do którego timer jest włączony. Struktura \ref MIT "MIT".*/
