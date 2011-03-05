@@ -185,3 +185,7 @@ eeprom_save:
 
 eeprom_load:
 	avrdude -E noreset -p m32 -c stk200 -P /dev/parport0 -y -u -U eeprom:w:eeprom/$(EEPROM_LAST_DUMP):r
+
+prepare_defs:
+	> aquamat_to_control.h
+	grep TIMERSSEC timerssec.h|grep -v "_H" >

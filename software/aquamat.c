@@ -330,6 +330,14 @@ int main(void)
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  @endverbatim
 
+@section toc Spis treści
+- \ref intro_sec
+- \ref func_current_sec
+- \ref modules
+- \ref micro
+- \ref hardware
+- \ref changes
+
 	@section intro_sec Wstęp
  	Celem projektu jest zaprojektowanie, implementacja i uruchomienie sterownika akwariowego o otwartej architekturze, łatwego do budowy i rozbudowy.
  	@section func_sec Funkcjonalność
@@ -337,7 +345,7 @@ int main(void)
 
 	@image html functions.png
 
-	@subsection func_current_sec Funkcjonalność wersji 1.X.X
+	@subsection func_current_sec Funkcjonalność aktualnej wersji
 
 - Zegar RTC
 	- obsługa dni tygodnia
@@ -374,6 +382,8 @@ int main(void)
 - Automatyczna dolewka
 - Przyciski szybkiego wysterowania wyjść (Quick Buttons)
 
+
+
 @section modules Moduły sterownika
 Celem łatwiejszej implementacji projekt został podzielony na moduły funkcjonalne. Poniższy rysunek przedstawia podstawowe zależności między modułami.
 
@@ -381,12 +391,11 @@ Celem łatwiejszej implementacji projekt został podzielony na moduły funkcjona
 
 Staram się aby, aby funkcjonalności stetrownika miały budowę modułową. Dzięki temu, przy odpowiednich ustawieniach warunkowej kompilacji będzie można, pewne funkcję włączać lub wyłączać.
 
-@image html aquamat_module.png
 
 - \ref temp.c Kontrola temperatury
 - \ref top_off.c Automatyczna dolewka
 - \ref outputs.c Sterowanie wyjściami
-
+- \ref pwm.c Wyjścia PWM
 
 @section micro Mikrokontroler
 Sterownik implementowany jest w z wykorzystaniem mikrokontrolera z rodziny AVR 8-bit. W tej chwili prace opierają sie o model ATmega32. Poniżej zamieszczono przyporządkowanie poszczególnych pinów.
@@ -403,7 +412,14 @@ Zależność między modułami pokazano na poniższym schemacie:
 @image html hardware_1_X_X.png
 
 
-@page changes Historia zmian
+@page changes Historia zmian w projekcie
+
+@section release_1_5_0 Wersja 1.5.0
+
+- timery sekundowe
+- wyjścia PWM
+- scenariusz "Słońce" - symulacja wschodu i zachodu słońca przy pomocy wyjść PWM
+
 @section release_1_0_12 Wersja 1.0.12
 - poprawiony błąd z indeksowaniemi tablicy nazw wyjść
  */

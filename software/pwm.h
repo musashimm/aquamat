@@ -40,7 +40,8 @@
 #define PWM_TIMER_TICKS 4
 
 #define EEPROM_PWM_WIDTH_OFFSET 0
-#define EEPROM_PWM_NAME_OFFSET 1
+#define EEPROM_PWM_FLAGS_OFFSET 1
+#define EEPROM_PWM_NAME_OFFSET 2
 #define EEPROM_PWM_SIZE (EEPROM_PWM_NAME_OFFSET + NAME_LENGTH)
 
 /** @struct PWM
@@ -48,7 +49,25 @@
 */
 struct PWM {
     uint8_t width;
+
+/** Flagi.
+	@verbatim
+7654|3210
+    |   X - blokada wyjścia
+    |   0 - odblokowane/aktywne
+    |   1 - zablokowane/nieaktywne
+	@endverbatim
+*/
+	uint8_t flags;
 };
+
+/** Flaga blokady.
+*/
+#define PWM_FLAG_BLOCKED 0
+
+/** Maska flag konfiguracyjnych.
+*/
+#define PWM_FLAG_CONFIG_MASK 0x0F
 
 void pwm_init(void);
 void pwm_to_port(void);
@@ -57,5 +76,6 @@ void load_pwm_settings(uint16_t,uint8_t);
 void save_pwm_settings(uint16_t,uint8_t);
 void load_pwms_settings(uint16_t);
 void save_pwms_settings(uint16_t);
+uint8_t pwm_check_flag(uint8_t,uint8_t);
 
 #endif

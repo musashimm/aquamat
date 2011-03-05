@@ -30,13 +30,13 @@
 /** @file pwm.c
 	@brief Implementacja wyjść PWM.
 
-	Definicja \ref PWM_PORT określa, który port będzie portem PWM. Definicja \ref PWM_PINS określa, które porty będą PWM.
+	Ze względu na "programową obsługę PWM" struktura PWM jest bezpośrednio skojarzona z portem mikrokontrolera. Definicja \ref PWM_PORT określa, który port będzie portem PWM. Definicja \ref PWM_PINS określa, które porty będą PWM. Index struktury \ref PWM określa jednocześnie jaki pin obsługuje. Przykładowo index 0 przypisany jest do pinu 0 w porcie \ref PWM_PORT. Blokada wyjścia PWM, blokuje zmiany szerokości impulsu wyjścia PWM przez scenariusze. Umożliwia to zmianę np. chwilową wartości PWM, nawet jak wcześniej był przypisany jakiś scenariusz do tego wyjścia.
 */
 
 extern uint8_t clock10ms;
 
-/** @struct PWM
-	@brief Struktura przechowywująca dane o wyjściach PWM.
+/** @var struct PWM pwms
+	@brief Tablica przechowująca struktury PWM.
 
 	Index wyjścia PWM odpowiada pinowi w porcie \ref PWM_PORT.
 */
@@ -102,8 +102,10 @@ void ui_pwm_settings_display(void) {
 	hd44780_out8dec3(pwms[menu_unit()].width);
 	hd44780_outstrn_P(PSTR("%"));
 	hd44780_next_line();
-
-	hd44780_outstrn_P(PAR_S);
+	hd44780_outstrn_P(SPACE_S);
+	hd44780_label(BL_S,FALSE,FALSE);
+	hd44780_switch_state(pwm_check_flag(menu_unit(),PWM_FLAG_BLOCKED),FALSE);
+	hd44780_outstrn_P(SPACE_S);
 	hd44780_label(NZW_S,TRUE,FALSE);
 	hd44780_outstrn(name);
 	hd44780_outstrn_P(PAR_S);
@@ -119,13 +121,16 @@ void ui_pwm_settings_display(void) {
 		menu_mod_uint8(1,13,&pwms[menu_unit()].width,0,PWM_MAX_WIDTH,FALSE);
 		break;
 	case 3:
+		menu_mod_bit(2,5,&(pwms[menu_unit()].flags),PWM_FLAG_BLOCKED);
+		break;
 	case 4:
 	case 5:
 	case 6:
 	case 7:
-		menu_mod_char(2,10,name,3);
-		break;
 	case 8:
+		menu_mod_char(2,12,name,4);
+		break;
+	case 9:
 		save_pwm_settings(menu_unit() * EEPROM_PWM_SIZE + EEPROM_PWM_SETTINGS_BEGIN,menu_unit());
 		save_name(menu_unit() * EEPROM_PWM_SIZE + EEPROM_PWM_SETTINGS_BEGIN + EEPROM_PWM_NAME_OFFSET);
 		menu_reset_phase();
@@ -156,6 +161,7 @@ void save_pwms_settings (uint16_t addr) {
 */
 void save_pwm_settings(uint16_t base_addr,uint8_t o) {
 	eeprom_write_byte(base_addr + EEPROM_PWM_WIDTH_OFFSET,pwms[o].width);
+	eeprom_write_byte(base_addr + EEPROM_PWM_FLAGS_OFFSET,pwms[o].flags & PWM_FLAG_CONFIG_MASK);
 }
 
 /** Wczytuje konfigurację wszystkich wyjść PWM.
@@ -167,5 +173,18 @@ void load_pwm_settings(uint16_t base_addr, uint8_t o) {
 	if (pwms[o].width > PWM_MAX_WIDTH) {
 		pwms[o].width = 0;
 	}
+	pwms[o].flags = eeprom_read_byte(base_addr + EEPROM_PWM_FLAGS_OFFSET) & PWM_FLAG_CONFIG_MASK;
+}
+
+/** Sprawdza poszczególne flagi
+	@param id numer wyjścia pwm
+	@param flag flaga
+*/
+uint8_t pwm_check_flag(uint8_t id,uint8_t flag) {
+    if (id >= PWM_NUM) {
+        return 1;
+    } else {
+        return pwms[id].flags & _BV(flag);
+    }
 }
 

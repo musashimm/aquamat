@@ -9,6 +9,7 @@ Struktura katalogów i plików:
 * software - miejsce na wszystkie kody źródłowe implementujące funkcjonalności sterownika
 * hardware - miejsce na schematy, rysunki, diagramy itp. opisujące sprzęt
 * docs - katalog dokumentacji
+			wykonaj: "doxygen Doxyfile" w katalogu głównym projektu, aby stworzyć pliki dokumentacji
 * files - katalog z plikami pomocnymi w projekcie
 * eeprom - przykładowe zrzuty z pamięci EEPROM
 COPYING - pełny tekst licencji GPLv2
