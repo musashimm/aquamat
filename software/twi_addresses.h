@@ -36,15 +36,7 @@ Zew. EEPROM AT24C64     0b1010-A2A1A0(R/W) 0b10101001/0xA9
 @endverbatim
 */
 
-/** Definicja \ref PROTOTYPE ustawiana jest w pliku \ref aquamat.h
-*/
-#ifndef PROTOTYPE
 #define OUTPUTS_DEVICE_1_ADDR 0x73
 #define OUTPUTS_DEVICE_2_ADDR 0x75
-#else
-#define OUTPUTS_DEVICE_1_ADDR 0x71
-#define OUTPUTS_DEVICE_2_ADDR 0x41
-#endif
-
 #define RTC_ADDR 0xA3
 #define EXT_EEPROM_ADDR 0xA9

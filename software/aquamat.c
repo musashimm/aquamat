@@ -48,6 +48,7 @@
 #include "menu.h"
 #include "timerssec.h"
 #include "pwm.h"
+#include "io.h"
 
 /** Wskaźnik do funkcji restart.
 */

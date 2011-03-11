@@ -26,19 +26,6 @@
 	@brief Plik nagłówkowy - Główna pętla programowa.
 */
 
-/** Niektóre ustawienia oraz niektóry sprzęt są inne w wersji prototypowej, np. niektóre adresy układów I2C,
-	więc poniższą definicją przełączam się na wersję prototypową.
-	Normalnie poniższa definicja powinna pozostać zakomentowana.
-*/
-
-#define PROTOTYPE yes
-#ifdef PROTOTYPE
-#define BUZZER_ON_HIGH
-#warning ################################################
-#warning PROTOTYPE mode enabled, disable it before commit
-#warning ################################################
-#endif
-
 /** Częstotliwość pracy kwarcu
 */
 #define F_CPU 8000000UL
@@ -134,16 +121,8 @@ typedef uint16_t TEMP;
 #define BUZZER_PORTOUT PORT(BUZZER_PORT)
 #define BUZZER_DDR DDR(BUZZER_PORT)
 
-/** W zależności od użytego tranzystora NPN lub PNP sterującego buzzer'em.
-*/
-#ifdef BUZZER_ON_HIGH
-#define buzzer_on() BUZZER_PORTOUT |= _BV(BUZZER_SWITCH)
-#define buzzer_off() BUZZER_PORTOUT &= ~_BV(BUZZER_SWITCH)
-#else
 #define buzzer_on() BUZZER_PORTOUT &= ~_BV(BUZZER_SWITCH)
 #define buzzer_off() BUZZER_PORTOUT |= _BV(BUZZER_SWITCH)
-#endif
-
 #define buzzer_toggle() BUZZER_PORTOUT ^= _BV(BUZZER_SWITCH)
 
 /** definicje flag
@@ -182,4 +161,3 @@ extern volatile uint8_t temp_counter;
 void(*restart)(void);
 
 #endif
-
