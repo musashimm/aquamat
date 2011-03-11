@@ -225,6 +225,19 @@ void gui_cm_execute(void) {
 				break;
 		}
 		break;
+	//------------------------------------------------------------------- pwm
+	case GUI_PWM_COMMAND:
+		switch (subcommand) {
+			case GUI_SUBCOMMAND_GET_STATUS: pwm_gui_get_status();
+				break;
+			case GUI_SUBCOMMAND_GET_SETTINGS: pwm_gui_get_settings();
+				break;
+			case GUI_SUBCOMMAND_SET: pwm_gui_set();
+				break;
+			case GUI_SUBCOMMAND_SET_STATE: pwm_gui_set_state();
+				break;
+		}
+		break;
 	//----------------------------------------------------------------- alarms
 	case GUI_ALARM_COMMAND:
 		switch (subcommand) {

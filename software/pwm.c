@@ -26,6 +26,9 @@
 #include "timerssec.h"
 #include "strings.h"
 #include "hd44780.h"
+#include "commandsDefs.h"
+#include "eeprom.h"
+#include "comm_gui.h"
 
 /** @file pwm.c
 	@brief Implementacja wyjść PWM.
@@ -208,4 +211,52 @@ void pwm_status(uint8_t o) {
 	hd44780_out8dec3(pwms[o].width);
 	hd44780_outstrn_P(PSTR("%"));
 	hd44780_outstrn_P(SPACE_S);
+}
+
+void pwm_gui_get_status(void) {
+	uint8_t i;
+	gui_command_start(GUI_PWM_COMMAND,GUI_SUBCOMMAND_GET_STATUS_RESPONSE);
+	for (i=0;i<PWM_NUM;i++) {
+		gui_command_data(pwms[i].width);
+		gui_command_data(pwms[i].flags);
+	}
+	gui_command_end();
+	gui_cm_return_status(GUI_COMMAND_OK,GUI_PWM_COMMAND,GUI_SUBCOMMAND_GET_STATUS);
+}
+
+void pwm_gui_get_settings(void) {
+	uint8_t i,j;
+	gui_command_start(GUI_PWM_COMMAND,GUI_SUBCOMMAND_GET_SETTINGS_RESPONSE);
+	for (i=0;i<PWM_NUM;i++) {
+		gui_command_data(pwms[i].width);
+		gui_command_data(pwms[i].flags);
+		load_name(i * EEPROM_PWM_SIZE + EEPROM_PWM_NAME_OFFSET + EEPROM_PWM_SETTINGS_BEGIN);
+		for(j=0;j<NAME_LENGTH;j++) {
+			gui_command_data(name[j]);
+		}
+	}
+	gui_command_end();
+	gui_cm_return_status(GUI_COMMAND_OK,GUI_PWM_COMMAND,GUI_SUBCOMMAND_GET_SETTINGS);
+}
+
+void pwm_gui_set(void) {
+	uint8_t i,id;
+	id = gui_get_first();
+	pwms[id].width = gui_get_next();
+	pwms[id].flags = gui_get_next();
+	save_pwm_settings(id * EEPROM_PWM_SIZE + EEPROM_PWM_SETTINGS_BEGIN,id);
+
+	for(i=0;i<NAME_LENGTH;i++) {
+		name[i] = gui_get_next();
+	}
+	save_name(id * EEPROM_PWM_SIZE + EEPROM_PWM_NAME_OFFSET + EEPROM_PWM_SETTINGS_BEGIN);
+	gui_cm_return_status_unit(GUI_COMMAND_OK,GUI_PWM_COMMAND,GUI_SUBCOMMAND_SET,id);
+}
+
+void pwm_gui_set_state(void) {
+	uint8_t id;
+	id = gui_get_first();
+	pwms[id].width = gui_get_next();
+	pwms[id].flags = gui_get_next();
+	gui_cm_return_status_unit(GUI_COMMAND_OK,GUI_PWM_COMMAND,GUI_SUBCOMMAND_SET_STATE,id);
 }

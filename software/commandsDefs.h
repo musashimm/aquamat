@@ -1,68 +1,28 @@
 /*
-    Aquamat - Sterownik akwariowy Open Source
-    Copyright (C) 2009 Wojciech Todryk (wojciech@todryk.pl)
+AquamatControl - Interfejs graficzny do sterownika akwariowego Aquamat
+Copyright (C) 2009 Wojciech Todryk (wojciech@todryk.pl)
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-	$Id$
+$Id$
 */
-
-#define GUI_BUFFER_FULL	0x81
-#define GUI_UNKONWN_COMMAND	0x82
-#define GUI_CLIENT_PRESENT	0x83
-#define GUI_COMMAND_OK 0x84
-#define GUI_COMMAND_CKSUM_ERROR 0x85
-#define GUI_COMMAND_PARAMS_ERROR 0x86
-#define GUI_EMPTY_RES 0x87
-#define GUI_PROCESSING_COMMAND 0x88
-
-#define GUI_EXTEND_MASK 0x7F
-#define GUI_EXTEND_BYTE 0x80
-
-#define GUI_STATUS_COMMAND 0x81
-#define GUI_DATETIME_COMMAND 0x82
-#define GUI_DAYTIME_COMMAND 0x83
-#define GUI_TEMP_COMMAND 0x84
-#define GUI_OUT_COMMAND 0x85
-#define GUI_ALARM_COMMAND 0x86
-#define GUI_TIMERS_COMMAND 0x87
-#define GUI_TIMERSV_COMMAND 0x88
-#define GUI_TOP_OFF_COMMAND 0x89
-#define GUI_LOG_COMMAND 0x90
-#define GUI_DEBUG_COMMAND 0x91
-
-#define GUI_SUBCOMMAND_GET_STATUS 0x81
-#define GUI_SUBCOMMAND_GET_STATUS_RESPONSE 0xA1
-#define GUI_SUBCOMMAND_SET 0x82
-#define GUI_SUBCOMMAND_CLEAR 0x83
-#define GUI_SUBCOMMAND_GET_SETTINGS 0x84
-#define GUI_SUBCOMMAND_GET_SETTINGS_RESPONSE 0xA4
-//#define GUI_SUBCOMMAND_SET_NAME 0x85
-#define GUI_SUBCOMMAND_SET_STATE 0x86
-#define GUI_SUBCOMMAND_SET_BLOCK 0x87
-#define GUI_SUBCOMMAND_SET_STATE_ALL 0x88
-#define GUI_SUBCOMMAND_SET_BLOCK_ALL 0x89
-#define GUI_SUBCOMMAND_DISCOVER 0x8A
-#define GUI_SUBCOMMAND_DISCOVER_RESPONSE 0xAA
-
-#define GUI_END_OF_COMMAND 0xFE
 
 /** @file commandsDefs.h
 	@brief Plik nagłówkowy - Implementacja protokołu komunikacyjnego
 
-	@section protocol Protokół
+	@section protocol Protokół komunikacyjny
 
 	@subsection statusmgmt Wiadomości statusowe
 	@verbatim
@@ -187,21 +147,67 @@
 	2. <GUI_LOG_COMMAND> <GUI_SUBCOMMAND_CLEAR> <CRC> <GUI_END_OF_COMMAND> - wyczyszczenie loga
 		Odp: brak.
 	@endverbatim
- 	@subsection crccalc Obliczanie sumy kontrolnej CRC
- 	Żeby zabezpieczyć się przed prostymi błędami mogącymi wystąpić w czasie komunikacji, sterownik wylicza sumę kontrolną
- 	otrzymanych komend. W przypadku wykrycia błędnej sumy kontrolnej komenda jest ignorowana.
 
- 	Algorytm wyliczania:
- 	@verbatim
- 	crc=0;
-	for (i=0;i<pcmbuff-2;i++) {
-		crc = crc ^ cm_buffer[i];
-	}
- 	@endverbatim
- 	Przykładowo:
- 	@verbatim
-    komenda |    89 81   |08FE
-            |liczone CRC |<CRC><GUI_END_OF_COMMAND>
- 	@endverbatim
+	@subsection pwmmgmt Zarządzanie wyjściami PWM.
+	@verbatim
+	1. <GUI_PWM_COMMAND> <GUI_SUBCOMMAND_GET_STATUS> <CRC> <GUI_END_OF_COMMAND> - pobranie stanu wyjść
+		Odp: <GUI_PWM_COMMAND> <GUI_SUBCOMMAND_GET_STATUS_RESPONSE> PWM_NUM x (<PWM><FLAGS>) <CRC> <GUI_END_OF_COMMAND>
+
+	2. <GUI_PWM_COMMAND> <GUI_SUBCOMMAND_GET_SETTINGS> <CRC> <GUI_END_OF_COMMAND> - pobranie calej konfiguracji wyjść
+		Odp: <GUI_PWM_COMMAND> <GUI_SUBCOMMAND_GET_SETTINGS_RESPONSE> PWM_NUM x (<PWM><FLAGS><A><B><C><D><E>) <CRC> <GUI_END_OF_COMMAND>
+
+	3. <GUI_PWM_COMMAND ><GUI_SUBCOMMAND_SET><id> <PWM> <FLAGS> <A> <B> <C> <D> <E> <CRC> <GUI_END_OF_COMMAND> - ustawienie parametrów wyjścia
+		Odp: brak.
+
+	4. <GUI_PWM_COMMAND ><GUI_SUBCOMMAND_SET_STATE><id> <PWM> <FLAGS> <CRC> <GUI_END_OF_COMMAND> - ustawienie stanu wyjścia
+		Odp: brak.
+	@endverbatim
 */
+
+
+#define GUI_BUFFER_FULL	0x81
+#define GUI_UNKONWN_COMMAND	0x82
+#define GUI_CLIENT_PRESENT	0x83
+#define GUI_COMMAND_OK 0x84
+#define GUI_COMMAND_CKSUM_ERROR 0x85
+#define GUI_COMMAND_PARAMS_ERROR 0x86
+#define GUI_EMPTY_RES 0x87
+
+#define GUI_EXTEND_MASK 0x7F
+#define GUI_EXTEND_BYTE 0x80
+
+#define GUI_STATUS_COMMAND 0x81
+#define GUI_DATETIME_COMMAND 0x82
+#define GUI_DAYTIME_COMMAND 0x83
+#define GUI_TEMP_COMMAND 0x84
+#define GUI_OUT_COMMAND 0x85
+#define GUI_ALARM_COMMAND 0x86
+#define GUI_TIMERS_COMMAND 0x87
+#define GUI_TIMERSV_COMMAND 0x88
+#define GUI_TOP_OFF_COMMAND 0x89
+#define GUI_LOG_COMMAND 0x90
+#define GUI_DEBUG_COMMAND 0x91
+#define GUI_PWM_COMMAND 0x92
+
+#define GUI_SUBCOMMAND_GET_STATUS 0x81
+#define GUI_SUBCOMMAND_GET_STATUS_RESPONSE 0xA1
+#define GUI_SUBCOMMAND_SET 0x82
+#define GUI_SUBCOMMAND_CLEAR 0x83
+#define GUI_SUBCOMMAND_GET_SETTINGS 0x84
+#define GUI_SUBCOMMAND_GET_SETTINGS_RESPONSE 0xA4
+//#define GUI_SUBCOMMAND_SET_NAME 0x85
+#define GUI_SUBCOMMAND_SET_STATE 0x86
+#define GUI_SUBCOMMAND_SET_BLOCK 0x87
+#define GUI_SUBCOMMAND_SET_STATE_ALL 0x88
+#define GUI_SUBCOMMAND_SET_BLOCK_ALL 0x89
+#define GUI_SUBCOMMAND_DISCOVER 0x8A
+#define GUI_SUBCOMMAND_DISCOVER_RESPONSE 0xAA
+
+#define GUI_END_OF_COMMAND 0xFE
+#define GUI_START_OF_COMMAND 0xFD
+
+/*1111 1111
+C0/D0
+1000 0001*/
+
 

@@ -79,5 +79,9 @@ void save_pwms_settings(uint16_t);
 uint8_t pwm_check_flag(uint8_t,uint8_t);
 void pwm_status_display(void);
 void pwm_status(uint8_t);
+void pwm_gui_get_status(void);
+void pwm_gui_get_settings(void);
+void pwm_gui_set(void);
+void pwm_gui_set_state(void);
 
 #endif
